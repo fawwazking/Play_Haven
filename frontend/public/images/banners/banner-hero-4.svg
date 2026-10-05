@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="600" viewBox="0 0 1920 600">
+  <defs>
+    <linearGradient id="banner_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="600" fill="url(#banner_grad)" />
+  <circle cx="1400" cy="300" r="450" fill="url(#glow)" />
+
+  <!-- Grid Tech Lines Pattern -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="100" x2="1920" y2="100" />
+    <line x1="0" y1="200" x2="1920" y2="200" />
+    <line x1="0" y1="300" x2="1920" y2="300" />
+    <line x1="0" y1="400" x2="1920" y2="400" />
+    <line x1="0" y1="500" x2="1920" y2="500" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="800" y1="0" x2="800" y2="600" />
+    <line x1="1100" y1="0" x2="1100" y2="600" />
+    <line x1="1400" y1="0" x2="1400" y2="600" />
+    <line x1="1700" y1="0" x2="1700" y2="600" />
+  </g>
+
+  <!-- Tag / Pill Badge -->
+  <g transform="translate(120, 140)">
+    <rect width="240" height="34" rx="17" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="1.5" />
+    <text x="120" y="22" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="12" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="2">RETRO & LEGACY GEMS</text>
+  </g>
+
+  <!-- Title -->
+  <text x="120" y="245" font-family="'Rajdhani', sans-serif" font-size="56" font-weight="800" fill="#ffffff" letter-spacing="1.5">
+    CLASSIC CONSOLE HERITAGE (PS3 & WII U)
+  </text>
+
+  <!-- Subtitle -->
+  <text x="120" y="305" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" fill="#94a3b8" font-weight="400">
+    Koleksi langka kaset Blu-ray PS3 segel & Disc Wii U legendaris untuk kolektor sejati.
+  </text>
+
+  <!-- Button Decorative -->
+  <g transform="translate(120, 360)">
+    <rect width="220" height="52" rx="10" fill="#8b5cf6" />
+    <text x="110" y="32" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">JELAJAHI KATALOG</text>
+  </g>
+
+  <!-- Hardware Badge Card on Right -->
+  <g transform="translate(1320, 160)">
+    <rect width="440" height="280" rx="24" fill="#0f172a" fill-opacity="0.6" stroke="#334155" stroke-width="2" />
+    <rect x="24" y="24" width="392" height="232" rx="16" fill="#8b5cf6" fill-opacity="0.08" />
+    <text x="220" y="145" font-family="'Rajdhani', sans-serif" font-size="34" font-weight="800" fill="#f8fafc" text-anchor="middle" letter-spacing="2">COLLECTOR SPECIAL</text>
+    <text x="220" y="185" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="600" fill="#38bdf8" text-anchor="middle" letter-spacing="3">AUTHENTIC PHYSICAL MEDIA</text>
+  </g>
+</svg>

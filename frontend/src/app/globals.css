@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-gaming: 'Rajdhani', sans-serif;
+  }
+}
+
+.font-gaming {
+  font-family: var(--font-gaming), sans-serif;
+}
