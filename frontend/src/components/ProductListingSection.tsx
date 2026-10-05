@@ -91,9 +91,13 @@ const CATEGORIES: PlatformCategory[] = [
   },
 ];
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+import staticGamesData from "@/data/staticGames.json";
+
 export default function ProductListingSection() {
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [games, setGames] = useState<Game[]>(staticGamesData as Game[]);
+  const [loading, setLoading] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const { addToCart } = useCart();
   const router = useRouter();
@@ -101,13 +105,15 @@ export default function ProductListingSection() {
   useEffect(() => {
     async function loadGames() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/v1/games/");
+        const res = await fetch(`${API_BASE}/api/v1/games/`);
         if (res.ok) {
           const data = await res.json();
-          setGames(data);
+          if (Array.isArray(data) && data.length > 0) {
+            setGames(data);
+          }
         }
       } catch (e) {
-        console.error("Gagal connect ke Django Backend", e);
+        // Fallback to staticGamesData already set in initial state
       } finally {
         setLoading(false);
       }

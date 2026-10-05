@@ -32,13 +32,17 @@ interface Game {
   total_stock?: number;
 }
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+import staticGamesData from "@/data/staticGames.json";
+
 function GamesContent() {
   const searchParams = useSearchParams();
   const platformParam = searchParams.get("platform");
   const queryParam = searchParams.get("search");
 
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [games, setGames] = useState<Game[]>(staticGamesData as Game[]);
+  const [loading, setLoading] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [searchQuery, setSearchQuery] = useState(queryParam || "");
   const [selectedPlatform, setSelectedPlatform] = useState(platformParam || "ALL");
@@ -60,13 +64,15 @@ function GamesContent() {
   useEffect(() => {
     async function loadGames() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/v1/games/");
+        const res = await fetch(`${API_BASE}/api/v1/games/`);
         if (res.ok) {
           const data = await res.json();
-          setGames(data);
+          if (Array.isArray(data) && data.length > 0) {
+            setGames(data);
+          }
         }
       } catch (e) {
-        console.error("Gagal connect ke Django Backend", e);
+        // Fallback to staticGamesData
       } finally {
         setLoading(false);
       }
