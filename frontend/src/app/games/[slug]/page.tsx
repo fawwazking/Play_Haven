@@ -7,6 +7,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { getHardwareProductBySlug, ProductItem } from "@/data/hardwareProducts";
+import staticGamesData from "@/data/staticGames.json";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 import { 
   Sparkles, 
   ShoppingCart, 
@@ -71,18 +74,28 @@ export default function UniversalProductDetailPage() {
         return;
       }
 
-      // 2. Jika bukan hardware, fetch dari API catalog Django/Supabase
+      // 2. Jika bukan hardware, coba cari di data statis dulu atau fetch API
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/v1/games/");
+        // Cek data statis lokal terlebih dahulu (agar instan di Vercel)
+        const staticList = (staticGamesData as unknown) as GameDetail[];
+        const staticFound = staticList.find((g) => g.slug === slug);
+        if (staticFound) {
+          setGame(staticFound);
+          if (staticFound.variants && staticFound.variants.length > 0) {
+            setSelectedPlatformSlug(staticFound.variants[0].platform_slug);
+            setSelectedCondition((staticFound.variants[0].condition as "NEW" | "USED") || "NEW");
+          }
+        }
+
+        // Kemudian coba fetch ke API backend jika aktif untuk update realtime
+        const res = await fetch(`${API_BASE}/api/v1/games/`);
         if (res.ok) {
           const list: GameDetail[] = await res.json();
           const found = list.find((g) => g.slug === slug);
           if (found) {
             setGame(found);
-            // Default pilih platform pertama
             if (found.variants && found.variants.length > 0) {
-              const firstPlat = found.variants[0].platform_slug;
-              setSelectedPlatformSlug(firstPlat);
+              setSelectedPlatformSlug(found.variants[0].platform_slug);
               setSelectedCondition((found.variants[0].condition as "NEW" | "USED") || "NEW");
             }
           }

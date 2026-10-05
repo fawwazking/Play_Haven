@@ -63,6 +63,19 @@ const CONSOLES: ConsoleProduct[] = [
     description: "Konsol legendaris incaran para kolektor game fisik retro. Memiliki chip Emotion Engine bawaan untuk memutar CD PS1, DVD PS2, dan BD PS3 secara native."
   },
   {
+    id: "ps-vita",
+    name: "Sony PlayStation Vita OLED Crystal Black (PCH-1000)",
+    slug: "ps-vita-oled-1000",
+    platform: "PlayStation Vita",
+    category: "PlayStation",
+    price: 1899000,
+    originalPrice: 2299000,
+    stock: 15,
+    image: "/images/consoles/ps-vita-console.jpg",
+    specs: ["5-inch Vibrant OLED Screen", "Dual Analog Sticks", "Rear Multi-touch Pad", "Full PS Vita Physical Card Slot"],
+    description: "Konsol genggam legendaris dengan layar OLED brilian 5 inci. Menjalankan seluruh kartu fisik game PS Vita dan koleksi retro PSP/PS1."
+  },
+  {
     id: "xbox-series-x",
     name: "Microsoft Xbox Series X 1TB Carbon Black",
     slug: "xbox-series-x-1tb",
@@ -74,6 +87,19 @@ const CONSOLES: ConsoleProduct[] = [
     image: "/images/consoles/xbox-series-x-console.png",
     specs: ["12 Teraflops GPU", "1TB Custom NVMe SSD", "4K UHD Blu-ray Drive", "Quick Resume Multiple Games"],
     description: "Konsol paling bertenaga di generasi ini. Dukungan Smart Delivery memastikan Anda selalu memainkan versi kaset fisik terbaik tanpa biaya tambahan."
+  },
+  {
+    id: "xbox-series-s",
+    name: "Microsoft Xbox Series S 512GB Robot White Set",
+    slug: "xbox-series-s-512gb",
+    platform: "Xbox Series S",
+    category: "Xbox",
+    price: 4599000,
+    originalPrice: 5199000,
+    stock: 18,
+    image: "/images/consoles/xbox-series-s-console.png",
+    specs: ["Custom NVMe SSD Architecture", "1440p up to 120 FPS", "Xbox Velocity Architecture", "Xbox Wireless Controller Included"],
+    description: "Konsol next-gen paling ringkas dan hemat daya. Menikmati kecepatan load instan, Quick Resume, dan ratusan game generasi terbaru."
   },
   {
     id: "xbox-one-s",
@@ -90,16 +116,42 @@ const CONSOLES: ConsoleProduct[] = [
   },
   {
     id: "switch-oled",
-    name: "Nintendo Switch OLED Model White Set",
+    name: "Nintendo Switch OLED Model with Dock & Joy-Con",
     slug: "nintendo-switch-oled-white",
     platform: "Nintendo Switch",
     category: "Nintendo",
     price: 4399000,
     originalPrice: 4799000,
     stock: 20,
-    image: "/images/consoles/switch-oled-console.png",
-    specs: ["7-inch Vibrant OLED Screen", "64GB Internal Storage", "Enhanced Audio Speakers", "Wired LAN Docking Port"],
-    description: "Layar OLED 7 inci menghadirkan warna pekat dan kontras tajam. Mainkan ribuan kaset cartridge Switch di mana saja secara fleksibel."
+    image: "/images/consoles/switch-docked-console.jpg",
+    specs: ["7-inch Vibrant OLED Screen", "Enhanced Audio System", "TV Dock with LAN Port", "Joy-Con Neon Red/Blue Included"],
+    description: "Layar OLED 7 inci menghadirkan warna pekat dan kontras tajam. Mainkan ribuan kaset cartridge Switch di mana saja atau sambungkan ke TV ruang keluarga."
+  },
+  {
+    id: "switch-lite",
+    name: "Nintendo Switch Lite Compact Handheld Grey Edition",
+    slug: "nintendo-switch-lite-grey",
+    platform: "Nintendo Switch",
+    category: "Nintendo",
+    price: 2499000,
+    originalPrice: 2899000,
+    stock: 15,
+    image: "/images/consoles/switch-lite-console.jpg",
+    specs: ["5.5-inch Touchscreen", "Ultra-lightweight 275g", "Integrated D-Pad Controls", "Full Switch Cartridge Compatibility"],
+    description: "Didesain khusus untuk handheld gaming portabel yang ringan dan praktis. Kompatibel dengan semua game cartridge Nintendo Switch dalam mode genggam."
+  },
+  {
+    id: "wii-classic",
+    name: "Nintendo Wii Sports Deluxe Console Set White",
+    slug: "nintendo-wii-sports-deluxe",
+    platform: "Nintendo Wii",
+    category: "Nintendo",
+    price: 1599000,
+    originalPrice: 1999000,
+    stock: 12,
+    image: "/images/consoles/wii-classic-console.jpg",
+    specs: ["Motion Sensing Wii Remote", "GameCube Hardware Back-compat", "4x GameCube Controller Ports", "Optical Disc Drive"],
+    description: "Konsol revolusioner yang mempopulerkan motion gaming di seluruh dunia. Memutar langsung kaset disc Nintendo Wii dan game disc Nintendo GameCube."
   },
   {
     id: "wii-u-deluxe",

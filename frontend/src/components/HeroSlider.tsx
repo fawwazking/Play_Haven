@@ -23,7 +23,7 @@ const slides: HeroSlide[] = [
     id: "spider-man-2",
     title: "Marvel's Spider-Man 2",
     subtitle: "Dua Spider-Man bersatu menghadapi symbiote mematikan Venom dalam grafis 4K 60FPS ultra mulus.",
-    tag: "PS5 Flagship BD",
+    tag: "PS5 FLAGSHIP BD",
     badge: "Official Best Seller",
     platform: "PlayStation 5",
     image: "/images/banners/banner-spiderman.jpg",
@@ -165,18 +165,20 @@ export default function HeroSlider() {
 
               {/* Right Column: Floating 3D Box Art Preview */}
               <div className="hidden lg:flex flex-col items-center justify-center relative">
-                <div className="w-56 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 bg-slate-900/60 backdrop-blur-md p-2 transform rotate-3 hover:rotate-0 transition-transform duration-500 shadow-sky-500/20">
-                  <img
-                    src={active.coverThumb}
-                    alt={active.title}
-                    className="w-full h-full object-contain rounded-xl"
-                  />
-                  <div className="absolute bottom-4 left-4 right-4 bg-slate-950/90 backdrop-blur-md text-center py-1.5 rounded-lg border border-white/10">
-                    <span className="text-[11px] font-bold text-sky-300">
-                      Physical Disc Edition
-                    </span>
+                <Link href={active.link} className="block group/box cursor-pointer">
+                  <div className="w-56 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 bg-slate-900/60 backdrop-blur-md p-2 transform rotate-3 group-hover/box:rotate-0 transition-transform duration-500 shadow-sky-500/20 relative">
+                    <img
+                      src={active.coverThumb}
+                      alt={active.title}
+                      className="w-full h-full object-contain rounded-xl"
+                    />
+                    <div className="absolute bottom-4 left-4 right-4 bg-slate-950/90 backdrop-blur-md text-center py-1.5 rounded-lg border border-white/10 shadow-lg">
+                      <span className="text-[11px] font-bold text-sky-300">
+                        {active.platform} BD Edition
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
 
             </div>
