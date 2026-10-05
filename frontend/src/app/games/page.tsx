@@ -6,6 +6,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
 import { Sparkles, ShoppingCart, Filter, Search, Zap, CheckCircle2 } from "lucide-react";
 
 interface Variant {
@@ -46,7 +48,11 @@ function GamesContent() {
   const [toastMsg, setToastMsg] = useState("");
   const [searchQuery, setSearchQuery] = useState(queryParam || "");
   const [selectedPlatform, setSelectedPlatform] = useState(platformParam || "ALL");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authActionText, setAuthActionText] = useState("memasukkan produk ke keranjang");
+
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -81,6 +87,12 @@ function GamesContent() {
   }, []);
 
   const handleAddToCart = (game: Game, variant?: Variant) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`menambahkan ${game.title} ke keranjang`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     const v = variant || game.variants[0];
     if (!v) return;
 
@@ -102,6 +114,12 @@ function GamesContent() {
   };
 
   const handleDirectBuy = (game: Game, variant?: Variant) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`membeli ${game.title}`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     const v = variant || game.variants[0];
     if (!v) return;
 
@@ -311,6 +329,13 @@ function GamesContent() {
           })}
         </div>
       )}
+
+      {/* Auth Modal Warning */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        actionText={authActionText}
+      />
     </div>
   );
 }

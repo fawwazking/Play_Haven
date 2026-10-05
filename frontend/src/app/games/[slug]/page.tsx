@@ -6,6 +6,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
 import { getHardwareProductBySlug, ProductItem } from "@/data/hardwareProducts";
 import staticGamesData from "@/data/staticGames.json";
 
@@ -64,6 +66,11 @@ export default function UniversalProductDetailPage() {
   // State untuk Non-Game Hardware (Konsol / Controller / Voucher)
   const [hardwareItem, setHardwareItem] = useState<ProductItem | null>(null);
 
+  // State Auth Modal
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authActionText, setAuthActionText] = useState("melanjutkan transaksi");
+  const { isAuthenticated } = useAuth();
+
   useEffect(() => {
     async function loadData() {
       // 1. Cek apakah ini produk hardware / voucher lokal
@@ -114,6 +121,12 @@ export default function UniversalProductDetailPage() {
 
   // Handle Game Add to Cart
   const handleAddToCartGame = () => {
+    if (!isAuthenticated) {
+      setAuthActionText(`menambahkan ${game?.title || "produk"} ke keranjang`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     if (!game) return;
     
     // Cari varian yang cocok dengan platform & kondisi yang dipilih
@@ -140,12 +153,23 @@ export default function UniversalProductDetailPage() {
   };
 
   const handleDirectBuyGame = () => {
+    if (!isAuthenticated) {
+      setAuthActionText(`membeli ${game?.title || "produk"}`);
+      setIsAuthModalOpen(true);
+      return;
+    }
     handleAddToCartGame();
     router.push("/checkout");
   };
 
   // Handle Hardware Add to Cart
   const handleAddToCartHardware = () => {
+    if (!isAuthenticated) {
+      setAuthActionText(`menambahkan ${hardwareItem?.name || "produk"} ke keranjang`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     if (!hardwareItem) return;
     addToCart({
       variantId: `hw-${hardwareItem.id}`,
@@ -164,6 +188,11 @@ export default function UniversalProductDetailPage() {
   };
 
   const handleDirectBuyHardware = () => {
+    if (!isAuthenticated) {
+      setAuthActionText(`membeli ${hardwareItem?.name || "produk"}`);
+      setIsAuthModalOpen(true);
+      return;
+    }
     handleAddToCartHardware();
     router.push("/checkout");
   };
@@ -541,6 +570,13 @@ export default function UniversalProductDetailPage() {
       </div>
 
       <Footer />
+
+      {/* Auth Modal Warning */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        actionText={authActionText}
+      />
     </main>
   );
 }

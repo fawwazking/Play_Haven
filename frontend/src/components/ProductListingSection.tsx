@@ -94,12 +94,18 @@ const CATEGORIES: PlatformCategory[] = [
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 import staticGamesData from "@/data/staticGames.json";
+import { useAuth } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
 
 export default function ProductListingSection() {
   const [games, setGames] = useState<Game[]>(staticGamesData as Game[]);
   const [loading, setLoading] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authActionText, setAuthActionText] = useState("memasukkan produk ke keranjang");
+
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -122,6 +128,12 @@ export default function ProductListingSection() {
   }, []);
 
   const handleAddToCart = (game: Game, variant?: Variant) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`menambahkan ${game.title} ke keranjang`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     const v = variant || game.variants[0];
     if (!v) return;
 
@@ -143,6 +155,12 @@ export default function ProductListingSection() {
   };
 
   const handleDirectBuy = (game: Game, variant?: Variant) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`membeli ${game.title}`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     const v = variant || game.variants[0];
     if (!v) return;
 
@@ -329,6 +347,13 @@ export default function ProductListingSection() {
             </div>
           );
         })}
+
+      {/* Auth Warning Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        actionText={authActionText}
+      />
 
     </section>
   );

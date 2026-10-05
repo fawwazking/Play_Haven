@@ -6,6 +6,9 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
+import { useRouter } from "next/navigation";
 import { 
   Trash2, 
   Plus, 
@@ -26,11 +29,13 @@ declare global {
 
 export default function CheckoutPage() {
   const { items, removeFromCart, updateQuantity, clearCart, subtotal, totalWeight } = useCart();
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   // Form State
-  const [recipientName, setRecipientName] = useState("Fawwaz Wijdan");
-  const [recipientPhone, setRecipientPhone] = useState("081234567890");
-  const [shippingAddress, setShippingAddress] = useState("Jl. Boulevard No. 19, Cilegon, Banten");
+  const [recipientName, setRecipientName] = useState("");
+  const [recipientPhone, setRecipientPhone] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
   const [courierName, setCourierName] = useState("JNE");
   const [courierService, setCourierService] = useState("REG");
   const [shippingCost, setShippingCost] = useState(18000);
@@ -39,11 +44,23 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [orderSuccess, setOrderSuccess] = useState<any>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Auto-fill user info when authenticated
+  React.useEffect(() => {
+    if (user) {
+      setRecipientName(user.first_name ? `${user.first_name} ${user.last_name}` : user.username);
+    }
+  }, [user]);
 
   const totalAmount = subtotal + shippingCost;
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
     if (items.length === 0) {
       setErrorMsg("Keranjang belanja Anda masih kosong.");
       return;
@@ -349,6 +366,13 @@ export default function CheckoutPage() {
       </div>
 
       <Footer />
+
+      {/* Auth Warning Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        actionText="melakukan proses checkout & pembayaran pesanan"
+      />
     </main>
   );
 }

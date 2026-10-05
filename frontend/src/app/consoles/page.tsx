@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle2, ShoppingCart, Zap, Sparkles } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
 import { useRouter } from "next/navigation";
 
 interface ConsoleProduct {
@@ -171,14 +173,23 @@ const CONSOLES: ConsoleProduct[] = [
 export default function ConsolesPage() {
   const [selectedBrand, setSelectedBrand] = useState<string>("ALL");
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authActionText, setAuthActionText] = useState("membeli konsol");
 
   const filteredConsoles = selectedBrand === "ALL" 
     ? CONSOLES 
     : CONSOLES.filter(c => c.category === selectedBrand);
 
   const handleAddToCart = (c: ConsoleProduct) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`menambahkan ${c.name} ke keranjang`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     addToCart({
       variantId: `console-${c.id}`,
       gameTitle: c.name,
@@ -196,6 +207,12 @@ export default function ConsolesPage() {
   };
 
   const handleDirectBuy = (c: ConsoleProduct) => {
+    if (!isAuthenticated) {
+      setAuthActionText(`membeli ${c.name}`);
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     addToCart({
       variantId: `console-${c.id}`,
       gameTitle: c.name,
@@ -346,6 +363,13 @@ export default function ConsolesPage() {
       </main>
 
       <Footer />
+
+      {/* Auth Modal Warning */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        actionText={authActionText}
+      />
     </div>
   );
 }
