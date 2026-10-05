@@ -245,13 +245,14 @@ function GamesContent() {
                 key={game.id}
                 className="group flex flex-col bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
               >
-                <div className="relative aspect-3/4 w-full bg-slate-900/5 overflow-hidden flex items-center justify-center">
+                <div className="relative aspect-3/4 w-full bg-slate-950 overflow-hidden flex items-center justify-center">
                   <img
                     src={game.cover_image_url}
                     alt={game.title}
-                    className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none" />
                   <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 z-10">
                     <span className="px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider bg-slate-900 text-white shadow-xs">
                       {platformName}

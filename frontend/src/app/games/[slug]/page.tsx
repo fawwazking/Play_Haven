@@ -410,13 +410,14 @@ export default function UniversalProductDetailPage() {
           
           {/* Cover Art Box */}
           <div className="md:col-span-5 lg:col-span-4 space-y-4">
-            <div className="relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-900/5 border border-slate-200 shadow-md flex items-center justify-center p-3">
+            <div className="relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-xl flex items-center justify-center">
               <img
                 src={game.cover_image_url}
                 alt={game.title}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
               />
-              <div className="absolute top-3 left-3 bg-slate-900/90 text-white text-[11px] font-bold px-3 py-1 rounded-md backdrop-blur-xs">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/10 pointer-events-none" />
+              <div className="absolute top-3 left-3 bg-slate-900/90 text-white text-[11px] font-bold px-3 py-1 rounded-md backdrop-blur-xs border border-white/10 shadow-sm">
                 {activeVariant?.platform_name || "Official BD Disc"}
               </div>
             </div>

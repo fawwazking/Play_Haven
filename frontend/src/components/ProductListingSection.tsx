@@ -247,13 +247,14 @@ export default function ProductListingSection() {
                       className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-sky-300 transition-all duration-300 overflow-hidden hover:-translate-y-1.5"
                     >
                       {/* Box Cover Art */}
-                      <Link href={`/games/${game.slug}`} className="block relative aspect-3/4 w-full bg-slate-900/5 overflow-hidden flex items-center justify-center cursor-pointer">
+                      <Link href={`/games/${game.slug}`} className="block relative aspect-3/4 w-full bg-slate-950 overflow-hidden flex items-center justify-center cursor-pointer">
                         <img
                           src={game.cover_image_url}
                           alt={game.title}
-                          className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none" />
 
                         {/* Badges on Top */}
                         <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 z-10">

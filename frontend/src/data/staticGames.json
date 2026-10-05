@@ -41,7 +41,8 @@
       }
     ],
     "min_price": 119000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "188661a4-f2f4-4ce9-b5d9-abeeb29061c6",
@@ -85,7 +86,8 @@
       }
     ],
     "min_price": 189000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "cbdadb7d-a257-477e-bf98-0bacd44cbe00",
@@ -129,7 +131,8 @@
       }
     ],
     "min_price": 130000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "8fabff30-2ea6-4ff4-8530-6bceb1cce18c",
@@ -173,7 +176,8 @@
       }
     ],
     "min_price": 139000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "f19de0ab-2d1a-4292-9a5e-2cc8994c7734",
@@ -217,7 +221,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "711eb03b-cd92-461a-923d-d38d7f9eaaf1",
@@ -261,7 +266,8 @@
       }
     ],
     "min_price": 289000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "4ccb455d-fee6-4d98-ba81-c15df3456e33",
@@ -305,7 +311,8 @@
       }
     ],
     "min_price": 169000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "71076b5e-34fc-4a59-b219-6227aad26028",
@@ -315,7 +322,7 @@
     "developer": "Insomniac Games",
     "release_year": 2018,
     "description": "Aksi berayun lincah melintasi gedung Manhattan melawan Sinister Six.",
-    "cover_image_url": "/images/games/marvels-spider-man-ps4.png",
+    "cover_image_url": "/images/games/marvels-spider-man-ps4.jpg",
     "variants": [
       {
         "id": "f9c65121-9f70-4efb-b985-116ea16b35ab",
@@ -349,7 +356,8 @@
       }
     ],
     "min_price": 210000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "6920bbad-8478-4713-ae63-23b28ef9c74a",
@@ -393,7 +401,8 @@
       }
     ],
     "min_price": 529000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "b102cfa3-c3b9-4d62-a255-94bb4d6eceae",
@@ -467,7 +476,8 @@
       }
     ],
     "min_price": 220000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "21001001-2a4f-48fa-9e57-cc1bcdb13ff9",
@@ -541,7 +551,8 @@
       }
     ],
     "min_price": 319000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "ce59b5d9-b1c1-40e3-a6cc-267d46df43a0",
@@ -551,7 +562,7 @@
     "developer": "Santa Monica Studio",
     "release_year": 2022,
     "description": "Petualangan Kratos dan Atreus melintasi Nine Realms menjelang terjadinya pertempuran Ragnarok.",
-    "cover_image_url": "/images/games/god-of-war-ragnarok-ps5.png",
+    "cover_image_url": "/images/games/god-of-war-ragnarok-ps5.jpg",
     "variants": [
       {
         "id": "6d6a34c6-94a4-40e7-83a7-428dd1b563c1",
@@ -585,7 +596,8 @@
       }
     ],
     "min_price": 549000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "50772d98-14cf-4072-a36a-aa2631882d3c",
@@ -629,7 +641,8 @@
       }
     ],
     "min_price": 480000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "c21c67ca-4349-4dd4-be5d-000b7c413399",
@@ -703,7 +716,8 @@
       }
     ],
     "min_price": 179000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "44d5158b-9817-40a8-a266-e642a2dfb8a4",
@@ -747,7 +761,8 @@
       }
     ],
     "min_price": 279000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "89e49b30-6c7a-4d01-900f-931fc3817979",
@@ -791,7 +806,8 @@
       }
     ],
     "min_price": 399000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "6d809ddf-006a-4fcd-b928-8878f1eb505b",
@@ -835,7 +851,8 @@
       }
     ],
     "min_price": 649000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "6cd0c332-4160-4a5c-81c9-a0a8a3a30d13",
@@ -909,7 +926,8 @@
       }
     ],
     "min_price": 299000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "1f3a3d1e-7b15-4e7d-93a1-b65e19aa3a31",
@@ -953,7 +971,8 @@
       }
     ],
     "min_price": 699000.0,
-    "total_stock": 38
+    "total_stock": 38,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "80cf5336-eccf-450d-987b-c9ef357f274d",
@@ -997,7 +1016,8 @@
       }
     ],
     "min_price": 399000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "b4b19c3b-3b6e-4522-bf6b-b4a9a16215e3",
@@ -1071,7 +1091,8 @@
       }
     ],
     "min_price": 189000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "fcbb1e29-2fd9-4f6f-aa65-67cb248e7ac5",
@@ -1115,7 +1136,8 @@
       }
     ],
     "min_price": 149000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "39708aae-2401-4001-995e-f528f5aa5a01",
@@ -1159,7 +1181,8 @@
       }
     ],
     "min_price": 490000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "ae804f4d-9783-4671-a2b3-b7c0b8463b7a",
@@ -1203,7 +1226,8 @@
       }
     ],
     "min_price": 199000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "75ff0dcb-3d78-4aa4-aaa4-bce53a4c7757",
@@ -1247,7 +1271,8 @@
       }
     ],
     "min_price": 105000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "54a4cbd5-e38e-4d38-bcbe-c07e21a52561",
@@ -1291,7 +1316,8 @@
       }
     ],
     "min_price": 169000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "73da5317-fcf0-4d12-816d-ef02c314dcbe",
@@ -1335,7 +1361,8 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "609e8c18-6565-4e09-8eaf-281d4df70447",
@@ -1379,7 +1406,8 @@
       }
     ],
     "min_price": 120000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "a3e689f9-1e7b-4c68-845f-b05d02a51f93",
@@ -1423,7 +1451,8 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "9dd61608-4126-448b-8bed-0eea76705d84",
@@ -1497,7 +1526,8 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 79
+    "total_stock": 79,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "d56a910c-0377-47bc-8a69-bb4c79f32d4c",
@@ -1541,7 +1571,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "018627f6-893e-47de-99f2-85347053376b",
@@ -1585,7 +1616,8 @@
       }
     ],
     "min_price": 149000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "14d00fd3-615e-483c-9921-92218a267f53",
@@ -1629,7 +1661,8 @@
       }
     ],
     "min_price": 179000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "b6ef0b72-4c1c-48ed-b90d-987dcc913cf4",
@@ -1673,7 +1706,8 @@
       }
     ],
     "min_price": 110000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "ee9b14ed-c2d7-463e-ad7a-dc0fc2d7256f",
@@ -1717,7 +1751,8 @@
       }
     ],
     "min_price": 229000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "309512f8-6f50-4153-9ae2-aafd74130424",
@@ -1761,7 +1796,8 @@
       }
     ],
     "min_price": 419000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "92b4e962-ef34-488b-b4f1-3466dafa0aad",
@@ -1805,7 +1841,8 @@
       }
     ],
     "min_price": 450000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "5bb3daec-bc3b-4897-bc7e-678d3e5a0131",
@@ -1849,7 +1886,8 @@
       }
     ],
     "min_price": 389000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "11608738-5650-4700-b234-3426529d6aa1",
@@ -1923,7 +1961,8 @@
       }
     ],
     "min_price": 129000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "35dba12d-45e5-438c-b3ab-6ceb9e6e0b86",
@@ -1997,7 +2036,8 @@
       }
     ],
     "min_price": 249000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "ffb9f0a4-59ce-440f-a2e2-9c964927d347",
@@ -2071,7 +2111,8 @@
       }
     ],
     "min_price": 189000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "e89353db-b6ce-4380-bbc2-ad6423618913",
@@ -2145,7 +2186,8 @@
       }
     ],
     "min_price": 139000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "59d7c8ce-d580-4cf2-afc7-46d306ee4c01",
@@ -2189,7 +2231,8 @@
       }
     ],
     "min_price": 379000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "6692545f-9243-4583-b8bc-6461aed787db",
@@ -2233,7 +2276,8 @@
       }
     ],
     "min_price": 210000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox One"
   },
   {
     "id": "ddc5c19e-9792-4956-8855-824c93ea56cc",
@@ -2307,7 +2351,8 @@
       }
     ],
     "min_price": 459000.0,
-    "total_stock": 79
+    "total_stock": 79,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "338a3ee1-6d1a-4045-9356-c700c12c93c4",
@@ -2351,7 +2396,8 @@
       }
     ],
     "min_price": 489000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "e6321dec-bcaa-406b-9b21-31177b56d536",
@@ -2395,7 +2441,8 @@
       }
     ],
     "min_price": 299000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "9582fb81-e029-46a5-ab23-4d9de9c273d3",
@@ -2439,7 +2486,8 @@
       }
     ],
     "min_price": 439000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "03466793-ac82-4b2b-8325-2193d6762ea8",
@@ -2483,7 +2531,8 @@
       }
     ],
     "min_price": 249000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "8a397074-2f91-4fb7-b820-de5ccbfe5137",
@@ -2527,7 +2576,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "962ce502-3b22-475c-b5c4-d0e83cbd1f16",
@@ -2537,7 +2587,7 @@
     "developer": "Bandai Namco / Sora Ltd.",
     "release_year": 2014,
     "description": "Edisi pertarungan HD perdana Smash Bros. dengan dukungan kontroler GameCube.",
-    "cover_image_url": "/images/games/super-smash-bros-for-wii-u-wii-u.png",
+    "cover_image_url": "/images/games/super-smash-bros-for-wii-u-wii-u.jpg",
     "variants": [
       {
         "id": "c2059fcb-03fb-4070-9b55-eb3e9fc7ecc2",
@@ -2571,7 +2621,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "72c6a830-2f22-476a-a19d-4ad172840e8a",
@@ -2615,7 +2666,8 @@
       }
     ],
     "min_price": 449000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "27e74c4b-fe57-4896-9c68-d0cd36a6409f",
@@ -2689,7 +2741,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "7f002399-008b-4e46-ab1c-ee40a766c457",
@@ -2699,7 +2752,7 @@
     "developer": "Nintendo EAD",
     "release_year": 2015,
     "description": "Tembak tinta dan kuasai area Turf War 4v4 dalam IP terobosan baru Nintendo.",
-    "cover_image_url": "/images/games/splatoon-wii-u.png",
+    "cover_image_url": "/images/games/splatoon-wii-u.jpg",
     "variants": [
       {
         "id": "d8e0990a-6287-4ac1-87f9-b97c29617ad3",
@@ -2733,7 +2786,8 @@
       }
     ],
     "min_price": 139000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "2e2d7042-06de-4d8f-ad81-c6ec06cb488e",
@@ -2777,7 +2831,8 @@
       }
     ],
     "min_price": 149000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "57f13839-8de9-4dae-956e-7a899dcb138c",
@@ -2821,7 +2876,8 @@
       }
     ],
     "min_price": 279000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "ff93930d-ae1c-42d5-b4d2-069d574fd906",
@@ -2865,7 +2921,8 @@
       }
     ],
     "min_price": 489000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "4626164e-7244-4e5d-a71b-7f28650579e4",
@@ -2909,7 +2966,8 @@
       }
     ],
     "min_price": 459000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "b0511a12-67c2-495e-a576-7ad9e4401bac",
@@ -2953,7 +3011,8 @@
       }
     ],
     "min_price": 479000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "e4c9301e-18ac-4838-968d-78b9e0fa7a30",
@@ -2997,7 +3056,8 @@
       }
     ],
     "min_price": 599000.0,
-    "total_stock": 39
+    "total_stock": 39,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "6095fb10-444b-461c-adf2-2147fe57ecd4",
@@ -3041,7 +3101,8 @@
       }
     ],
     "min_price": 569000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "59a4923e-f769-4e28-9db8-b730d7f23b46",
@@ -3115,7 +3176,8 @@
       }
     ],
     "min_price": 449000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "0376c5ce-e70d-4097-bef3-9ecf5db37025",
@@ -3159,7 +3221,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "e35eb3aa-688b-4bac-a4d0-2b2dfde2798a",
@@ -3203,7 +3266,8 @@
       }
     ],
     "min_price": 129000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "89f816e4-17ca-45f3-a252-88e097e52188",
@@ -3247,7 +3311,8 @@
       }
     ],
     "min_price": 469000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "a4b95e50-95ea-4a26-b4a2-6792eea47c01",
@@ -3321,7 +3386,8 @@
       }
     ],
     "min_price": 199000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "bf4bbf19-5d11-4ea5-89d9-d0d867ecece1",
@@ -3365,7 +3431,8 @@
       }
     ],
     "min_price": 149000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "29c10919-7b53-4db1-a017-dc41a2abc7cd",
@@ -3409,7 +3476,8 @@
       }
     ],
     "min_price": 439000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "52f6e4d5-5e63-4027-a175-595da1861301",
@@ -3453,7 +3521,8 @@
       }
     ],
     "min_price": 649000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "6a420a7f-1bc1-4aa7-9591-91186e33bb53",
@@ -3497,7 +3566,8 @@
       }
     ],
     "min_price": 599000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "aa4e4a35-800b-4bdd-94f6-a50d266adacf",
@@ -3541,7 +3611,8 @@
       }
     ],
     "min_price": 599000.0,
-    "total_stock": 39
+    "total_stock": 39,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "232a9d1c-81e7-4f25-bde0-137781419d37",
@@ -3585,7 +3656,8 @@
       }
     ],
     "min_price": 599000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 5"
   },
   {
     "id": "67d9050a-e8e4-40e6-ae59-ce03d8dcb6df",
@@ -3629,7 +3701,8 @@
       }
     ],
     "min_price": 399000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 4"
   },
   {
     "id": "f628f072-6791-4938-9c63-74528fc77836",
@@ -3673,7 +3746,8 @@
       }
     ],
     "min_price": 179000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "09d2040a-f9e3-41bd-83f8-e683fbcf7797",
@@ -3717,7 +3791,8 @@
       }
     ],
     "min_price": 159000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "e84b9674-c38a-4fb2-a491-4ddfc2fa9a2b",
@@ -3761,7 +3836,8 @@
       }
     ],
     "min_price": 149000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "PlayStation 3"
   },
   {
     "id": "56e6c8a1-e768-490e-811f-cab4bfafa04c",
@@ -3805,7 +3881,8 @@
       }
     ],
     "min_price": 549000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Xbox Series X"
   },
   {
     "id": "d328c4de-e413-40bf-8ae5-55cbe2744482",
@@ -3849,7 +3926,8 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "69f0a109-bbc5-4fe1-b51b-bffe9d725043",
@@ -3893,7 +3971,8 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "b96bacf5-a282-4e7f-b52a-2657733e4cea",
@@ -3967,7 +4046,8 @@
       }
     ],
     "min_price": 419000.0,
-    "total_stock": 80
+    "total_stock": 80,
+    "primary_platform": "Nintendo Switch"
   },
   {
     "id": "54e25959-a87b-47e4-ac6b-e7c4d6715406",
@@ -4011,7 +4091,8 @@
       }
     ],
     "min_price": 179000.0,
-    "total_stock": 40
+    "total_stock": 40,
+    "primary_platform": "Nintendo Wii U"
   },
   {
     "id": "d0c494af-6e6f-4e2c-b732-8576e337b60e",
@@ -4021,7 +4102,7 @@
     "developer": "",
     "release_year": 2025,
     "description": "Rasakan revolusi simulasi sepak bola terdepan dengan HyperMotionV generasi terbaru, taktik FC IQ tingkat lanjut, dan lisensi resmi UEFA Champions League & Premier League di multi-konsol.",
-    "cover_image_url": "/images/games/ea-sports-fc-26-ps5.jpg",
+    "cover_image_url": "/images/games/ea-sports-fc-26.jpg",
     "variants": [
       {
         "id": "8f39c814-db71-4d42-88c0-b89ce050af61",
@@ -4145,6 +4226,7 @@
       }
     ],
     "min_price": 499000.0,
-    "total_stock": 160
+    "total_stock": 160,
+    "primary_platform": "Nintendo Switch"
   }
 ]
