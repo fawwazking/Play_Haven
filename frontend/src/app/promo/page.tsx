@@ -41,14 +41,14 @@ const PROMO_PRODUCTS: PromoProduct[] = [
   {
     id: "promo-zelda-totk",
     name: "The Legend of Zelda: Tears of the Kingdom",
-    slug: "the-legend-of-zelda-tears-of-the-kingdom-nintendo-switch",
+    slug: "the-legend-of-zelda-tears-of-the-kingdom-switch",
     platform: "Nintendo Switch",
     category: "Game Cartridge",
     discountPercent: 25,
     promoPrice: 599000,
     originalPrice: 799000,
     stock: 20,
-    image: "/images/games/the-legend-of-zelda-tears-of-the-kingdom-nintendo-switch.jpg",
+    image: "/images/games/the-legend-of-zelda-tears-of-the-kingdom-switch.jpg",
     badge: "BESTSELLER 25%",
     description: "Jelajahi daratan dan langit Hyrule dengan kebebasan berkreasi tak terbatas."
   },

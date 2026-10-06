@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
@@ -23,6 +23,19 @@ import {
 
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import staticGamesData from "@/data/staticGames.json";
+import { ALL_HARDWARE_PRODUCTS } from "@/data/hardwareProducts";
+
+interface SearchItem {
+  id: string;
+  title: string;
+  platform: string;
+  slug: string;
+  price: string;
+  cover: string;
+  category: "Game BD" | "Konsol" | "Aksesoris" | "Voucher";
+  publisher?: string;
+}
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,22 +45,76 @@ export default function Header() {
   const { totalItems, openDrawer } = useCart();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
-  const POPULAR_SUGGESTIONS = [
-    { title: "EA Sports FC 26", platform: "PS5 / PS4 / Xbox / Switch", slug: "ea-sports-fc-26", price: "Rp 899.000", tag: "Hot New" },
-    { title: "Black Myth: Wukong", platform: "PS5", slug: "black-myth-wukong-ps5", price: "Rp 849.000", tag: "Trending" },
-    { title: "Marvel's Spider-Man 2", platform: "PS5", slug: "marvels-spider-man-2-ps5", price: "Rp 879.000", tag: "Hot" },
-    { title: "The Legend of Zelda: Tears of the Kingdom", platform: "Switch", slug: "the-legend-of-zelda-tears-of-the-kingdom-nintendo-switch", price: "Rp 799.000", tag: "Best Seller" },
-    { title: "God of War Ragnarok", platform: "PS5", slug: "god-of-war-ragnarok-ps5", price: "Rp 849.000", tag: "Popular" },
-    { title: "Silent Hill 2 Remake", platform: "PS5", slug: "silent-hill-2-remake-ps5", price: "Rp 799.000", tag: "Horror" },
-    { title: "Tekken 8", platform: "PS5", slug: "tekken-8-ps5", price: "Rp 799.000", tag: "Fighting" },
-    { title: "Forza Horizon 5", platform: "Xbox", slug: "forza-horizon-5-xbox-series-x", price: "Rp 799.000", tag: "Racing" },
-    { title: "Elden Ring", platform: "PS5 / Xbox", slug: "elden-ring-ps5", price: "Rp 749.000", tag: "GOTY" },
-    { title: "Super Mario Bros. Wonder", platform: "Switch", slug: "super-mario-bros-wonder-switch", price: "Rp 699.000", tag: "New" },
-  ];
+  // Susun katalog lengkap (game BD + hardware konsol/aksesoris/voucher)
+  const searchCatalog: SearchItem[] = useMemo(() => {
+    interface RawGame {
+      id: string;
+      title: string;
+      slug: string;
+      publisher: string;
+      cover_image_url: string;
+      min_price?: number;
+      primary_platform?: string;
+      variants?: Array<{ platform_name: string; price: string | number }>;
+    }
 
-  const filteredSuggestions = searchTerm.trim()
-    ? POPULAR_SUGGESTIONS.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()) || item.platform.toLowerCase().includes(searchTerm.toLowerCase()))
-    : POPULAR_SUGGESTIONS.slice(0, 5);
+    const gameItems: SearchItem[] = (staticGamesData as unknown as RawGame[]).map((g) => {
+      const firstVariant = g.variants?.[0];
+      const priceNum = Number(g.min_price || firstVariant?.price || 0);
+      return {
+        id: `game-${g.id}`,
+        title: g.title,
+        platform: firstVariant?.platform_name || g.primary_platform || "Console BD",
+        slug: g.slug,
+        price: `Rp ${priceNum.toLocaleString("id-ID")}`,
+        cover: g.cover_image_url || "/images/consoles/ps5-console.png",
+        category: "Game BD",
+        publisher: g.publisher,
+      };
+    });
+
+    const hwItems: SearchItem[] = ALL_HARDWARE_PRODUCTS.map((h) => ({
+      id: `hw-${h.id}`,
+      title: h.name,
+      platform: h.platform || (h.categoryType === "console" ? "Konsol" : h.categoryType === "accessory" ? "Aksesoris" : "Voucher"),
+      slug: h.slug,
+      price: `Rp ${Number(h.price).toLocaleString("id-ID")}`,
+      cover: h.image,
+      category: h.categoryType === "console" ? "Konsol" : h.categoryType === "accessory" ? "Aksesoris" : "Voucher",
+      publisher: h.brand || h.category,
+    }));
+
+    return [...gameItems, ...hwItems];
+  }, []);
+
+  // Filter dinamis hasil pencarian
+  const filteredSuggestions = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) {
+      const topSlugs = [
+        "ea-sports-fc-26",
+        "black-myth-wukong-ps5",
+        "marvels-spider-man-2-ps5",
+        "the-legend-of-zelda-tears-of-the-kingdom-switch",
+        "god-of-war-ragnarok-ps5",
+        "ps5-disc-edition",
+        "elden-ring-xbox-series-xbox-series-x",
+        "dualsense-wireless-controller"
+      ];
+      return searchCatalog.filter((item) => topSlugs.includes(item.slug)).slice(0, 6);
+    }
+
+    return searchCatalog
+      .filter((item) => {
+        return (
+          item.title.toLowerCase().includes(term) ||
+          item.platform.toLowerCase().includes(term) ||
+          item.category.toLowerCase().includes(term) ||
+          (item.publisher && item.publisher.toLowerCase().includes(term))
+        );
+      })
+      .slice(0, 8);
+  }, [searchTerm, searchCatalog]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +131,100 @@ export default function Header() {
     setSearchTerm("");
     router.push(`/games/${slug}`);
   };
+
+  // Helper render dropdown suggestions (digunakan untuk desktop dan mobile)
+  const renderSuggestionsDropdown = () => (
+    <>
+      <div 
+        className="fixed inset-0 z-40 bg-black/10 md:bg-transparent" 
+        onClick={() => setShowSuggestions(false)} 
+      />
+      <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
+          <span className="flex items-center gap-1.5">
+            <Flame className="w-3.5 h-3.5 text-amber-500" />
+            {searchTerm.trim() ? "Hasil Pencarian Cepat" : "Game & Produk Terpopuler"}
+          </span>
+          <span className="text-[10px] text-slate-400 hidden sm:inline">Tekan Enter untuk semua hasil</span>
+        </div>
+
+        <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
+          {filteredSuggestions.length > 0 ? (
+            filteredSuggestions.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => handleSelectSuggestion(item.slug)}
+                className="p-2.5 sm:p-3 hover:bg-sky-50/70 flex items-center justify-between cursor-pointer transition-colors group gap-3"
+              >
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  {/* Cover Thumbnail Game: ukuran proporsional kaset box art 3:4 */}
+                  <div className="relative w-12 h-16 sm:w-13 sm:h-[70px] rounded-xl overflow-hidden bg-slate-900/5 shrink-0 border border-slate-200/90 shadow-xs group-hover:scale-105 group-hover:shadow-md transition-all duration-200 flex items-center justify-center p-0.5">
+                    <img
+                      src={item.cover}
+                      alt={item.title}
+                      className={`w-full h-full rounded-lg ${
+                        item.category === "Game BD" ? "object-cover" : "object-contain bg-white"
+                      }`}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/images/consoles/ps5-console.png";
+                      }}
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                      <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-600 transition-colors line-clamp-1">
+                        {item.title}
+                      </p>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-md shrink-0 border ${
+                        item.category === "Game BD"
+                          ? "bg-sky-50 text-sky-700 border-sky-200"
+                          : item.category === "Konsol"
+                          ? "bg-purple-50 text-purple-700 border-purple-200"
+                          : item.category === "Aksesoris"
+                          ? "bg-amber-50 text-amber-700 border-amber-200"
+                          : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      }`}>
+                        {item.category}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-400 truncate">
+                      <span className="font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded text-[9px] shrink-0">
+                        {item.platform}
+                      </span>
+                      <span>•</span>
+                      <span className="truncate">
+                        {item.category === "Game BD" ? "Kaset Fisik Original • Garansi Optik" : "Resmi & Bergaransi"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="font-gaming text-xs sm:text-sm font-bold text-slate-900 group-hover:text-sky-600">
+                    {item.price}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-500 group-hover:translate-x-0.5 transition-all" />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-6 text-center text-xs text-slate-400">
+              Tidak ada produk yang cocok dengan &quot;{searchTerm}&quot;
+            </div>
+          )}
+        </div>
+
+        <div 
+          onClick={handleSearch}
+          className="p-2.5 bg-slate-50 text-center text-xs font-bold text-sky-600 hover:text-sky-700 hover:bg-sky-50 cursor-pointer border-t border-slate-100 transition-colors"
+        >
+          Lihat Semua Hasil untuk &quot;{searchTerm || "Semua Produk"}&quot; &rarr;
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
@@ -107,66 +268,8 @@ export default function Header() {
               </div>
             </form>
 
-            {/* Suggestions Dropdown */}
-            {showSuggestions && (
-              <>
-                <div 
-                  className="fixed inset-0 z-40" 
-                  onClick={() => setShowSuggestions(false)} 
-                />
-                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
-                    <span className="flex items-center gap-1.5">
-                      <Flame className="w-3.5 h-3.5 text-amber-500" />
-                      {searchTerm.trim() ? "Hasil Pencarian Cepat" : "Game Paling Banyak Dicari"}
-                    </span>
-                    <span className="text-[10px] text-slate-400">Tekan Enter untuk semua hasil</span>
-                  </div>
-
-                  <div className="divide-y divide-slate-100 max-h-80 overflow-y-auto">
-                    {filteredSuggestions.length > 0 ? (
-                      filteredSuggestions.map((item, idx) => (
-                        <div
-                          key={idx}
-                          onClick={() => handleSelectSuggestion(item.slug)}
-                          className="p-3 hover:bg-sky-50/70 flex items-center justify-between cursor-pointer transition-colors group"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-sky-100 text-slate-600 group-hover:text-sky-700">
-                              {item.platform}
-                            </span>
-                            <div>
-                              <p className="text-xs font-bold text-slate-800 group-hover:text-sky-600 transition-colors">
-                                {item.title}
-                              </p>
-                              <span className="text-[10px] text-slate-400">Kaset Fisik Original • Siap Kirim</span>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <span className="font-gaming text-xs font-bold text-slate-900">
-                              {item.price}
-                            </span>
-                            <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-500 group-hover:translate-x-0.5 transition-all" />
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-6 text-center text-xs text-slate-400">
-                        Tidak ada kaset yang cocok dengan &quot;{searchTerm}&quot;
-                      </div>
-                    )}
-                  </div>
-
-                  <div 
-                    onClick={handleSearch}
-                    className="p-2.5 bg-slate-50 text-center text-xs font-bold text-sky-600 hover:text-sky-700 hover:bg-sky-50 cursor-pointer border-t border-slate-100 transition-colors"
-                  >
-                    Lihat Semua Hasil untuk &quot;{searchTerm || "Semua Game"}&quot; &rarr;
-                  </div>
-                </div>
-              </>
-            )}
+            {/* Suggestions Dropdown Desktop */}
+            {showSuggestions && renderSuggestionsDropdown()}
           </div>
 
           {/* Right Actions: Cart & Auth */}
@@ -250,21 +353,27 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
-        <form onSubmit={handleSearch} className="md:hidden pb-4">
-          <div className="relative w-full">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari game, kaset BD, konsol..."
-              className="w-full pl-4 pr-10 py-2.5 bg-slate-100 text-sm text-slate-800 rounded-full border border-slate-200 focus:border-sky-500 outline-hidden"
-            />
-            <button type="submit" className="absolute right-3.5 top-3 text-slate-400">
-              <Search className="w-4 h-4" />
-            </button>
-          </div>
-        </form>
+        {/* Mobile Search Bar with Suggestions */}
+        <div className="md:hidden pb-4 relative">
+          <form onSubmit={handleSearch}>
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                placeholder="Cari game, kaset BD, konsol..."
+                className="w-full pl-4 pr-10 py-2.5 bg-slate-100 text-sm text-slate-800 rounded-full border border-slate-200 focus:border-sky-500 outline-hidden"
+              />
+              <button type="submit" className="absolute right-3.5 top-3 text-slate-400">
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
+          </form>
+
+          {/* Suggestions Dropdown Mobile */}
+          {showSuggestions && renderSuggestionsDropdown()}
+        </div>
       </div>
 
       {/* Main Navigation Bar */}

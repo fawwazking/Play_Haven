@@ -53,7 +53,8 @@ interface GameDetail {
 export default function UniversalProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params?.slug as string;
+  const rawSlug = (Array.isArray(params?.slug) ? params.slug[0] : params?.slug) || "";
+  const slug = decodeURIComponent(rawSlug).trim().toLowerCase();
   const { addToCart } = useCart();
 
   // State untuk Game Kaset BD
@@ -73,6 +74,11 @@ export default function UniversalProductDetailPage() {
 
   useEffect(() => {
     async function loadData() {
+      if (!slug) return;
+      setLoading(true);
+      setGame(null);
+      setHardwareItem(null);
+
       // 1. Cek apakah ini produk hardware / voucher lokal
       const hw = getHardwareProductBySlug(slug);
       if (hw) {
@@ -81,11 +87,34 @@ export default function UniversalProductDetailPage() {
         return;
       }
 
-      // 2. Jika bukan hardware, coba cari di data statis dulu atau fetch API
+      // Helper pencarian game statis yang toleran terhadap format slug
+      const findGameInStatic = (targetSlug: string): GameDetail | undefined => {
+        const norm = targetSlug.toLowerCase().trim();
+        const list = (staticGamesData as unknown) as GameDetail[];
+
+        // Direct match
+        const exact = list.find((g) => g.slug.toLowerCase() === norm);
+        if (exact) return exact;
+
+        // Platform suffix variations
+        const cleanNorm = norm
+          .replace(/-nintendo-switch$/, "-switch")
+          .replace(/-(ps[345]|xbox[a-z0-9\-]*|switch|wii-?u?)$/i, "");
+
+        const suffixMatched = list.find((g) => {
+          const gClean = g.slug.toLowerCase().replace(/-(ps[345]|xbox[a-z0-9\-]*|switch|wii-?u?)$/i, "");
+          return g.slug.toLowerCase() === cleanNorm || gClean === cleanNorm || g.slug.toLowerCase().startsWith(cleanNorm + "-");
+        });
+        if (suffixMatched) return suffixMatched;
+
+        // Hyphen-less match
+        const stripped = norm.replace(/[^a-z0-9]/g, "");
+        return list.find((g) => g.slug.toLowerCase().replace(/[^a-z0-9]/g, "") === stripped);
+      };
+
+      // 2. Jika bukan hardware, cari di data statis lokal
       try {
-        // Cek data statis lokal terlebih dahulu (agar instan di Vercel)
-        const staticList = (staticGamesData as unknown) as GameDetail[];
-        const staticFound = staticList.find((g) => g.slug === slug);
+        const staticFound = findGameInStatic(slug);
         if (staticFound) {
           setGame(staticFound);
           if (staticFound.variants && staticFound.variants.length > 0) {
@@ -94,18 +123,46 @@ export default function UniversalProductDetailPage() {
           }
         }
 
-        // Kemudian coba fetch ke API backend jika aktif untuk update realtime
-        const res = await fetch(`${API_BASE}/api/v1/games/`);
-        if (res.ok) {
-          const list: GameDetail[] = await res.json();
-          const found = list.find((g) => g.slug === slug);
-          if (found) {
-            setGame(found);
-            if (found.variants && found.variants.length > 0) {
-              setSelectedPlatformSlug(found.variants[0].platform_slug);
-              setSelectedCondition((found.variants[0].condition as "NEW" | "USED") || "NEW");
+        // 3. Coba fetch ke API backend untuk data realtime (jika backend aktif)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+
+        try {
+          // Coba retrieve endpoint spesifik slug terlebih dahulu
+          const detailRes = await fetch(`${API_BASE}/api/v1/games/${encodeURIComponent(slug)}/`, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (detailRes.ok) {
+            const detail: GameDetail = await detailRes.json();
+            if (detail && detail.id) {
+              setGame((prev) => ({
+                ...detail,
+                description: detail.description?.trim() || prev?.description || staticFound?.description || ""
+              }));
+              if (detail.variants && detail.variants.length > 0) {
+                setSelectedPlatformSlug(detail.variants[0].platform_slug);
+                setSelectedCondition((detail.variants[0].condition as "NEW" | "USED") || "NEW");
+              }
+            }
+          } else {
+            // Fallback cari di list
+            const listRes = await fetch(`${API_BASE}/api/v1/games/`, { signal: controller.signal });
+            if (listRes.ok) {
+              const list: GameDetail[] = await listRes.json();
+              const found = list.find((g) => g.slug.toLowerCase() === slug.toLowerCase() || g.slug.toLowerCase().startsWith(slug.toLowerCase()));
+              if (found) {
+                setGame((prev) => ({
+                  ...found,
+                  description: found.description?.trim() || prev?.description || staticFound?.description || ""
+                }));
+                if (found.variants && found.variants.length > 0) {
+                  setSelectedPlatformSlug(found.variants[0].platform_slug);
+                  setSelectedCondition((found.variants[0].condition as "NEW" | "USED") || "NEW");
+                }
+              }
             }
           }
+        } catch {
+          // Backend offline atau timeout, data statis sudah terpasang
         }
       } catch (err) {
         console.error("Gagal load detail game:", err);
@@ -114,9 +171,7 @@ export default function UniversalProductDetailPage() {
       }
     }
 
-    if (slug) {
-      loadData();
-    }
+    loadData();
   }, [slug]);
 
   // Handle Game Add to Cart
@@ -331,7 +386,11 @@ export default function UniversalProductDetailPage() {
                 {/* Description */}
                 <div className="pt-2 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 space-y-2">
                   <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Deskripsi Produk:</h3>
-                  <p>{hardwareItem.description}</p>
+                  <p>
+                    {hardwareItem.description?.trim() 
+                      ? hardwareItem.description 
+                      : `Unit resmi ${hardwareItem.name} original bergaransi resmi PlayHaven Store. Kondisi 100% Brand New Sealed & siap kirim.`}
+                  </p>
                 </div>
               </div>
 
@@ -537,7 +596,9 @@ export default function UniversalProductDetailPage() {
               <div className="pt-2 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 border-t border-slate-100">
                 <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Sinopsis & Detail Game:</h3>
                 <p>
-                  {game.description || `Nikmati pengalaman gaming maksimal dengan kaset fisik original ${game.title}. Semua kaset bergaransi terbaca normal di drive optik konsol Anda dengan jaminan originalitas piringan disc resmi.`}
+                  {game.description?.trim() 
+                    ? game.description 
+                    : `Nikmati pengalaman gaming maksimal dengan kaset fisik original ${game.title}. Semua kaset bergaransi terbaca normal di drive optik konsol Anda dengan jaminan originalitas piringan disc resmi.`}
                 </p>
               </div>
 

@@ -272,6 +272,19 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     description: "Mainkan ratusan game berkualitas tinggi di konsol Xbox, PC, dan Cloud Gaming. Termasuk langganan EA Play, diskon eksklusif member, dan game day-one rilis."
   },
   {
+    id: "xbox-game-pass-ultimate-1m",
+    name: "Xbox Game Pass Ultimate 1 Bulan (PC / Console)",
+    slug: "xbox-game-pass-ultimate-1m",
+    categoryType: "voucher",
+    category: "Xbox",
+    denomination: "1 Bulan Ultimate Sub",
+    price: 159000,
+    stock: 20,
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+    region: "Global Code",
+    description: "Langganan 1 bulan Xbox Game Pass Ultimate termasuk akses ratusan game PC dan konsol Xbox, EA Play, dan Xbox Cloud Gaming tanpa hambatan."
+  },
+  {
     id: "nintendo-eshop-20usd",
     name: "Nintendo eShop Card $20 USD (US Region)",
     slug: "nintendo-eshop-20usd",
@@ -283,6 +296,19 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo_Switch_logo.svg/800px-Nintendo_Switch_logo.svg.png",
     region: "United States (US)",
     description: "Isi saldo dompet Nintendo eShop akun region US Anda untuk membeli game indie, DLC Super Smash Bros, Mario Kart Booster Course Pass, dan game klasik Nintendo Online."
+  },
+  {
+    id: "nintendo-eshop-50usd",
+    name: "Nintendo eShop Card $50 USD (US Region)",
+    slug: "nintendo-eshop-50-usd",
+    categoryType: "voucher",
+    category: "Nintendo",
+    denomination: "$50 USD Balance",
+    price: 825000,
+    stock: 20,
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo_Switch_logo.svg/800px-Nintendo_Switch_logo.svg.png",
+    region: "United States (US)",
+    description: "Isi saldo eShop aman dan mudah untuk membeli game blockbuster Switch secara langsung dari console Anda."
   },
   {
     id: "steam-wallet-120k",
@@ -300,5 +326,37 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
 ];
 
 export function getHardwareProductBySlug(slug: string): ProductItem | undefined {
-  return ALL_HARDWARE_PRODUCTS.find(p => p.slug === slug);
+  if (!slug) return undefined;
+  const norm = decodeURIComponent(slug).toLowerCase().trim();
+
+  // 1. Direct match
+  const exact = ALL_HARDWARE_PRODUCTS.find(p => p.slug.toLowerCase() === norm);
+  if (exact) return exact;
+
+  // 2. Normalized aliases
+  const aliases: Record<string, string> = {
+    "nintendo-eshop-20-usd": "nintendo-eshop-20usd",
+    "nintendo-eshop-20usd": "nintendo-eshop-20usd",
+    "nintendo-eshop-50usd": "nintendo-eshop-50-usd",
+    "nintendo-eshop-50-usd": "nintendo-eshop-50-usd",
+    "xbox-game-pass-ultimate-1m": "xbox-game-pass-ultimate-1m",
+    "xbox-gamepass-ultimate-1m": "xbox-game-pass-ultimate-1m",
+    "xbox-game-pass-ultimate-3m": "xbox-game-pass-ultimate-3m",
+    "ps5-slim": "ps5-disc-edition",
+    "ps5": "ps5-disc-edition",
+    "ps4-pro": "ps4-pro-1tb",
+    "xbox-series-x": "xbox-series-x-1tb",
+    "xbox-series-s": "xbox-series-s-512gb",
+    "switch-oled": "nintendo-switch-oled-white",
+    "switch-lite": "nintendo-switch-lite-grey",
+  };
+
+  if (aliases[norm]) {
+    const aliased = ALL_HARDWARE_PRODUCTS.find(p => p.slug === aliases[norm]);
+    if (aliased) return aliased;
+  }
+
+  // 3. Hyphen-less match
+  const cleanNorm = norm.replace(/[^a-z0-9]/g, "");
+  return ALL_HARDWARE_PRODUCTS.find(p => p.slug.toLowerCase().replace(/[^a-z0-9]/g, "") === cleanNorm);
 }
