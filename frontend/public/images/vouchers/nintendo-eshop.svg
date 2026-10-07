@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="504" viewBox="0 0 800 504">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f0d13"/>
+      <stop offset="0.55" stop-color="#e60012"/>
+      <stop offset="1" stop-color="#ff4b3e"/>
+    </linearGradient>
+    <linearGradient id="chipgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7e7b3"/>
+      <stop offset="1" stop-color="#d3b26e"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="504" rx="36" fill="url(#bg)"/>
+  
+      <circle cx="710" cy="70" r="190" fill="#ffffff" opacity="0.06"/>
+      <circle cx="780" cy="420" r="150" fill="#ffffff" opacity="0.05"/>
+      <circle cx="110" cy="470" r="120" fill="#000000" opacity="0.10"/>
+      <path d="M0,330 C200,270 420,400 800,310 L800,504 L0,504 Z" fill="#000000" opacity="0.14"/>
+      <path d="M0,360 C220,300 430,430 800,340" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.10"/>
+  <rect x="0" y="0" width="800" height="170" rx="36" fill="url(#shine)"/>
+  <rect x="1.5" y="1.5" width="797" height="501" rx="34.5" fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="3"/>
+  
+      <g transform="translate(52,74)">
+        <rect x="0" y="0" width="96" height="68" rx="12" fill="url(#chipgrad)" stroke="#d9c27e" stroke-width="2"/>
+        <path d="M0,23 h96 M0,45 h96 M32,0 v68 M64,0 v68" stroke="#b89b5e" stroke-width="2" fill="none"/>
+      </g>
+  <text x="176" y="112" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="4" fill="#ffffff" opacity="0.85">REDEEMABLE GIFT CARD</text>
+  <text x="52" y="238" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="900" fill="#ffffff">NINTENDO</text>
+  <text x="54" y="280" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="3" fill="#ffffff" opacity="0.92">eSHOP • SWITCH</text>
+  <text x="52" y="352" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#ffffff" opacity="0.95">Digital Wallet Top-Up</text>
+  <rect x="50" y="384" width="330" height="64" rx="14" fill="#ffffff" opacity="0.16"/>
+  <rect x="50" y="384" width="330" height="64" rx="14" fill="none" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+  <text x="72" y="428" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#ffffff">$20 USD</text>
+  <text x="748" y="428" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#ffffff" opacity="0.85">REGION US ONLY</text>
+</svg>

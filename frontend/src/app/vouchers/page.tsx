@@ -30,7 +30,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "Rp 100.000 Wallet",
     price: 105000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/psn-card.svg",
     region: "Indonesia (Reg 3)",
     description: "Kode redeem instan untuk mengisi saldo PlayStation Store Indonesia. Beli game digital, DLC, atau langganan PS Plus."
   },
@@ -42,7 +42,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "Rp 400.000 Wallet",
     price: 415000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/psn-card.svg",
     region: "Indonesia (Reg 3)",
     description: "Saldo resmi PSN Store Indonesia tanpa kartu kredit untuk membeli game AAA digital terbaru dan seasonal passes."
   },
@@ -54,7 +54,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "3 Bulan Subscription",
     price: 449000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/psn-card.svg",
     region: "Indonesia (Reg 3)",
     description: "Akses ratusan game katalog PS4/PS5, game klasik legendaris PS1/PS2/PSP, uji coba game berbatas waktu, dan cloud saves."
   },
@@ -66,7 +66,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "1 Bulan Ultimate",
     price: 159000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+    image: "/images/vouchers/xbox-game-pass.svg",
     region: "Global / Indonesia",
     description: "Termasuk Xbox Cloud Gaming, ratusan game PC & Xbox konsol, keanggotaan EA Play, dan diskon eksklusif member."
   },
@@ -78,7 +78,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "$20 USD Balance",
     price: 335000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo.svg/800px-Nintendo.svg.png",
+    image: "/images/vouchers/nintendo-eshop.svg",
     region: "United States (Reg 1)",
     description: "Redeem pada akun Nintendo eShop region US untuk membeli game indie dan game first-party eksklusif Nintendo Switch."
   },
@@ -90,7 +90,7 @@ const VOUCHERS: VoucherProduct[] = [
     denomination: "$50 USD Balance",
     price: 825000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo.svg/800px-Nintendo.svg.png",
+    image: "/images/vouchers/nintendo-eshop.svg",
     region: "United States (Reg 1)",
     description: "Isi saldo eShop aman dan mudah untuk membeli game blockbuster Switch secara langsung dari console Anda."
   }

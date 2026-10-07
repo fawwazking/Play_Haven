@@ -228,7 +228,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "Rp 100.000 Wallet",
     price: 105000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/psn-card.svg",
     region: "Indonesia (Reg 3)",
     description: "Kode redeem instan resmi untuk mengisi saldo PlayStation Store Indonesia. Beli game digital, download konten DLC, atau bayar langganan PS Plus dengan mudah dan aman tanpa kartu kredit."
   },
@@ -241,7 +241,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "Rp 400.000 Wallet",
     price: 415000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/psn-card.svg",
     region: "Indonesia (Reg 3)",
     description: "Saldo resmi PSN Store Indonesia tanpa kartu kredit untuk membeli game AAA digital terbaru, battle pass, dan seasonal passes favorit Anda di PS5 dan PS4."
   },
@@ -254,7 +254,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "3 Bulan Subscription",
     price: 449000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/800px-PlayStation_logo.svg.png",
+    image: "/images/vouchers/ps-plus.svg",
     region: "Indonesia (Reg 3)",
     description: "Akses ratusan game katalog PS4/PS5, game klasik legendaris PS1/PS2/PSP, uji coba game berbatas waktu (Game Trials), cloud saves, dan fitur multiplayer online."
   },
@@ -267,7 +267,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "3 Bulan Ultimate Sub",
     price: 389000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+    image: "/images/vouchers/xbox-game-pass.svg",
     region: "Global Code",
     description: "Mainkan ratusan game berkualitas tinggi di konsol Xbox, PC, dan Cloud Gaming. Termasuk langganan EA Play, diskon eksklusif member, dan game day-one rilis."
   },
@@ -280,7 +280,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "1 Bulan Ultimate Sub",
     price: 159000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/800px-Xbox_one_logo.svg.png",
+    image: "/images/vouchers/xbox-game-pass.svg",
     region: "Global Code",
     description: "Langganan 1 bulan Xbox Game Pass Ultimate termasuk akses ratusan game PC dan konsol Xbox, EA Play, dan Xbox Cloud Gaming tanpa hambatan."
   },
@@ -293,7 +293,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "$20 USD Balance",
     price: 335000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo_Switch_logo.svg/800px-Nintendo_Switch_logo.svg.png",
+    image: "/images/vouchers/nintendo-eshop.svg",
     region: "United States (US)",
     description: "Isi saldo dompet Nintendo eShop akun region US Anda untuk membeli game indie, DLC Super Smash Bros, Mario Kart Booster Course Pass, dan game klasik Nintendo Online."
   },
@@ -306,7 +306,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "$50 USD Balance",
     price: 825000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo_Switch_logo.svg/800px-Nintendo_Switch_logo.svg.png",
+    image: "/images/vouchers/nintendo-eshop.svg",
     region: "United States (US)",
     description: "Isi saldo eShop aman dan mudah untuk membeli game blockbuster Switch secara langsung dari console Anda."
   },
@@ -319,7 +319,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     denomination: "Rp 120.000 Balance",
     price: 125000,
     stock: 20,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/800px-Steam_icon_logo.svg.png",
+    image: "/images/vouchers/steam-wallet.svg",
     region: "Indonesia (IDR)",
     description: "Voucher Steam Wallet resmi mata uang Rupiah langsung masuk ke saldo akun Steam Anda. Siap digunakan belanja saat event Steam Summer/Winter Sale tanpa potongan kartu kredit."
   }
