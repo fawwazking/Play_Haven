@@ -7,6 +7,7 @@ from django.db import transaction
 from django.conf import settings
 from rest_framework import status, views, permissions
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 from .models import Order, OrderItem
 from catalog.models import GameVariant
 
@@ -259,7 +260,7 @@ class AdminOrdersView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        orders = Order.objects.prefetch_related('items__variant__game').order_by('-created_at')[:50]
+        orders = Order.objects.select_related('user').prefetch_related('items__variant__game').order_by('-created_at')[:50]
         data = []
         for o in orders:
             items_data = [
@@ -272,11 +273,11 @@ class AdminOrdersView(views.APIView):
             ]
             data.append({
                 'order_number': o.order_number,
-                'customer_name': o.customer_name,
-                'customer_email': o.customer_email,
-                'customer_phone': o.customer_phone,
-                'shipping_courier': o.shipping_courier,
-                'shipping_city': o.shipping_city,
+                'customer_name': o.recipient_name,
+                'customer_email': (o.user.email if o.user else "") or "-",
+                'customer_phone': o.recipient_phone,
+                'shipping_courier': f"{o.courier_name} {o.courier_service}".strip(),
+                'shipping_city': o.shipping_address[:40] if o.shipping_address else "-",
                 'status': o.status,
                 'total_amount': float(o.total_amount),
                 'created_at': o.created_at.strftime('%Y-%m-%d %H:%M'),
@@ -312,3 +313,26 @@ class AdminStockUpdateView(views.APIView):
             return Response({'status': 'success', 'variant_id': str(variant.id), 'stock': variant.stock})
         except GameVariant.DoesNotExist:
             return Response({'error': 'Variant not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class AdminUsersView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        users = User.objects.all().order_by('-date_joined')[:100]
+        data = []
+        for u in users:
+            order_count = u.orders.count()
+            data.append({
+                'id': u.id,
+                'username': u.username,
+                'email': u.email or "-",
+                'full_name': f"{u.first_name} {u.last_name}".strip() or "-",
+                'is_staff': u.is_staff,
+                'is_superuser': u.is_superuser,
+                'is_active': u.is_active,
+                'role': 'Admin' if (u.is_staff or u.is_superuser) else 'Customer',
+                'order_count': order_count,
+                'date_joined': u.date_joined.strftime('%Y-%m-%d %H:%M') if u.date_joined else "-",
+                'last_login': u.last_login.strftime('%Y-%m-%d %H:%M') if u.last_login else "Belum Pernah",
+            })
+        return Response(data)

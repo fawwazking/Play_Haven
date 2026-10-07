@@ -22,7 +22,8 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldAlert,
-  LogIn
+  LogIn,
+  Users
 } from "lucide-react";
 
 interface AdminStats {
@@ -48,6 +49,20 @@ interface OrderItem {
   price: number;
 }
 
+interface UserData {
+  id: number;
+  username: string;
+  email: string;
+  full_name: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+  is_active: boolean;
+  role: string;
+  order_count: number;
+  date_joined: string;
+  last_login: string;
+}
+
 interface OrderData {
   order_number: string;
   customer_name: string;
@@ -67,7 +82,8 @@ export default function AdminDashboardPage() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [orders, setOrders] = useState<OrderData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"overview" | "orders" | "inventory">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "orders" | "inventory" | "customers">("overview");
+  const [users, setUsers] = useState<UserData[]>([]);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [searchOrder, setSearchOrder] = useState("");
   const [updatingOrder, setUpdatingOrder] = useState<string | null>(null);
@@ -76,9 +92,10 @@ export default function AdminDashboardPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [resStats, resOrders] = await Promise.all([
+      const [resStats, resOrders, resUsers] = await Promise.all([
         fetch(apiUrl("/api/v1/admin-api/stats/")),
-        fetch(apiUrl("/api/v1/admin-api/orders/"))
+        fetch(apiUrl("/api/v1/admin-api/orders/")),
+        fetch(apiUrl("/api/v1/admin-api/users/"))
       ]);
 
       if (resStats.ok) {
@@ -88,6 +105,10 @@ export default function AdminDashboardPage() {
       if (resOrders.ok) {
         const dataOrders = await resOrders.json();
         setOrders(dataOrders);
+      }
+      if (resUsers.ok) {
+        const dataUsers = await resUsers.json();
+        setUsers(dataUsers);
       }
     } catch (err) {
       console.error("Gagal mengambil data admin API backend", err);
@@ -237,6 +258,16 @@ export default function AdminDashboardPage() {
             }`}
           >
             Peringatan Stok & Inventori
+          </button>
+          <button
+            onClick={() => setActiveTab("customers")}
+            className={`py-3 border-b-2 transition-all cursor-pointer ${
+              activeTab === "customers" 
+                ? "border-sky-400 text-sky-400" 
+                : "border-transparent text-slate-400 hover:text-white"
+            }`}
+          >
+            Pelanggan / Users ({users.length})
           </button>
         </div>
       </div>
@@ -539,6 +570,86 @@ export default function AdminDashboardPage() {
               </table>
             </div>
 
+          </div>
+        )}
+
+
+        {/* CUSTOMERS TAB */}
+        {activeTab === "customers" && (
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-sky-600" />
+                  <span>Daftar Pengguna Terdaftar ({users.length})</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Akun gamer dan staf admin yang tersimpan di database Supabase (tabel auth_user).
+                </p>
+              </div>
+              <span className="text-xs font-semibold px-3 py-1 bg-sky-50 text-sky-700 rounded-full border border-sky-100 self-start sm:self-auto">
+                {users.filter(u => u.role === "Customer").length} Pelanggan • {users.filter(u => u.role === "Admin").length} Admin
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                  <tr>
+                    <th className="py-3.5 px-6">Pengguna</th>
+                    <th className="py-3.5 px-6">Email</th>
+                    <th className="py-3.5 px-6">Peran</th>
+                    <th className="py-3.5 px-6 text-center">Total Order</th>
+                    <th className="py-3.5 px-6">Tgl Terdaftar</th>
+                    <th className="py-3.5 px-6">Login Terakhir</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+                  {users.length > 0 ? (
+                    users.map((u) => (
+                      <tr key={u.id} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-linear-to-tr from-sky-500 to-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                              {u.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="font-bold text-slate-900">{u.username}</div>
+                              {u.full_name && u.full_name !== "-" && (
+                                <div className="text-[11px] text-slate-400">{u.full_name}</div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 font-mono text-slate-600">{u.email}</td>
+                        <td className="py-4 px-6">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                              u.role === "Admin"
+                                ? "bg-purple-100 text-purple-700 border border-purple-200"
+                                : "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                            }`}
+                          >
+                            {u.role}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 text-center font-bold text-slate-900">
+                          {u.order_count}
+                        </td>
+                        <td className="py-4 px-6 text-slate-500">{u.date_joined}</td>
+                        <td className="py-4 px-6 text-slate-400">{u.last_login}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-slate-400 text-xs">
+                        Belum ada user yang terdaftar.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
