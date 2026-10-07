@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based theme toggle: <html class="dark">. Native (no new dep). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', sans-serif;
@@ -9,4 +12,76 @@
 
 .font-gaming {
   font-family: var(--font-gaming), sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   Dark mode: one-shot surface remap.
+   The markup uses hardcoded slate/white surfaces WITHOUT dark: variants
+   across ~23 files. Rather than editing every file (:hover, opacity and
+   arbitrary-value variants make class edits risky), this block remaps the
+   compiled utilities under .dark. Accent colors (sky/emerald/rose/amber)
+   are untouched — they stay legible on dark surfaces.
+------------------------------------------------------------------- */
+@layer utilities {
+  .dark .bg-white { background-color: #0f172a; }
+  .dark .bg-slate-50 { background-color: #0f172a; }
+  .dark .bg-slate-100 { background-color: #1e293b; }
+  .dark .bg-slate-200 { background-color: #334155; }
+
+  .dark .text-slate-900,
+  .dark .text-slate-800 { color: #f1f5f9; }
+  .dark .text-slate-700 { color: #e2e8f0; }
+  .dark .text-slate-600 { color: #cbd5e1; }
+  .dark .text-slate-500 { color: #94a3b8; }
+  .dark .text-slate-400 { color: #94a3b8; }
+
+  .dark .border-slate-100 { border-color: #1e293b; }
+  .dark .border-slate-200 { border-color: #1e293b; }
+  .dark .border-slate-300 { border-color: #334155; }
+  .dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #1e293b; }
+  .dark .placeholder-slate-400::placeholder { color: #64748b; }
+
+  /* Pastel tints / translucent surfaces that would wash out on dark */
+  .dark .bg-sky-50,
+  .dark .bg-sky-50\/50, .dark .bg-sky-50\/70, .dark .bg-sky-50\/80,
+  .dark .bg-blue-50, .dark .bg-blue-50\/80, .dark .bg-blue-100,
+  .dark .bg-emerald-50, .dark .bg-emerald-50\/80, .dark .bg-emerald-100,
+  .dark .bg-amber-50, .dark .bg-amber-50\/80, .dark .bg-amber-100,
+  .dark .bg-purple-50, .dark .bg-indigo-50, .dark .bg-rose-50, .dark .bg-rose-100, .dark .bg-red-50 {
+    background-color: rgba(148, 163, 184, 0.12);
+  }
+  .dark .hover\:bg-sky-50:hover,
+  .dark .hover\:bg-sky-50\/70:hover { background-color: rgba(56, 189, 248, 0.12); }
+  .dark .hover\:bg-rose-50:hover { background-color: rgba(251, 113, 133, 0.12); }
+
+  .dark .text-sky-600,
+  .dark .text-sky-700,
+  .dark .text-sky-800 { color: #38bdf8; }
+  .dark .hover\:text-sky-600:hover,
+  .dark .hover\:text-sky-700:hover { color: #7dd3fc; }
+  .dark .border-sky-200,
+  .dark .border-sky-300,
+  .dark .border-sky-100 { border-color: rgba(56, 189, 248, 0.3); }
+  .dark .bg-sky-100 { background-color: rgba(56, 189, 248, 0.15); }
+  .dark .text-emerald-600,
+  .dark .text-emerald-700,
+  .dark .text-emerald-800 { color: #34d399; }
+  .dark .border-emerald-200 { border-color: rgba(52, 211, 153, 0.3); }
+  .dark .text-amber-600,
+  .dark .text-amber-700,
+  .dark .text-amber-800 { color: #fbbf24; }
+  .dark .border-amber-200 { border-color: rgba(251, 191, 36, 0.3); }
+  .dark .text-rose-600,
+  .dark .text-rose-700,
+  .dark .text-rose-800,
+  .dark .text-red-700 { color: #fb7185; }
+  .dark .border-rose-200,
+  .dark .border-red-200 { border-color: rgba(251, 113, 133, 0.3); }
+  .dark .text-blue-600,
+  .dark .text-blue-700,
+  .dark .text-indigo-600,
+  .dark .text-purple-600,
+  .dark .text-purple-700 { color: #93c5fd; }
+  .dark .border-blue-200,
+  .dark .border-purple-200 { border-color: rgba(147, 197, 253, 0.3); }
 }

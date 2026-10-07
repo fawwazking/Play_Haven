@@ -1,5 +1,6 @@
 "use client";
 
+import { getApiBase } from "@/lib/api";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -11,7 +12,7 @@ import AuthModal from "@/components/AuthModal";
 import { getHardwareProductBySlug, ProductItem } from "@/data/hardwareProducts";
 import staticGamesData from "@/data/staticGames.json";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE = getApiBase();
 import { 
   Sparkles, 
   ShoppingCart, 

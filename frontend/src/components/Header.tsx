@@ -18,11 +18,15 @@ import {
   ArrowRight,
   LogIn,
   LogOut,
-  ShieldCheck
+  ShieldCheck,
+  Sun,
+  Moon
 } from "lucide-react";
 
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSettings, useT } from "@/context/SettingsContext";
+import SettingsMenu from "@/components/SettingsMenu";
 import staticGamesData from "@/data/staticGames.json";
 import { ALL_HARDWARE_PRODUCTS } from "@/data/hardwareProducts";
 
@@ -44,6 +48,9 @@ export default function Header() {
   const router = useRouter();
   const { totalItems, openDrawer } = useCart();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { theme, toggleTheme } = useSettings();
+  const t = useT();
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   // Susun katalog lengkap (game BD + hardware konsol/aksesoris/voucher)
   const searchCatalog: SearchItem[] = useMemo(() => {
@@ -143,9 +150,9 @@ export default function Header() {
         <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
           <span className="flex items-center gap-1.5">
             <Flame className="w-3.5 h-3.5 text-amber-500" />
-            {searchTerm.trim() ? "Hasil Pencarian Cepat" : "Game & Produk Terpopuler"}
+            {searchTerm.trim() ? t("searchQuick") : t("searchPopular")}
           </span>
-          <span className="text-[10px] text-slate-400 hidden sm:inline">Tekan Enter untuk semua hasil</span>
+          <span className="text-[10px] text-slate-400 hidden sm:inline">{t("searchEnter")}</span>
         </div>
 
         <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
@@ -193,9 +200,9 @@ export default function Header() {
                       <span className="font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded text-[9px] shrink-0">
                         {item.platform}
                       </span>
-                      <span>•</span>
+                      <span>{t("login")}</span>
                       <span className="truncate">
-                        {item.category === "Game BD" ? "Kaset Fisik Original • Garansi Optik" : "Resmi & Bergaransi"}
+                        {item.category === "Game BD" ? t("warrantyOptical") : t("warrantyOfficial")}
                       </span>
                     </div>
                   </div>
@@ -211,7 +218,7 @@ export default function Header() {
             ))
           ) : (
             <div className="p-6 text-center text-xs text-slate-400">
-              Tidak ada produk yang cocok dengan &quot;{searchTerm}&quot;
+              {t("searchEmpty")} &quot;{searchTerm}&quot;
             </div>
           )}
         </div>
@@ -220,7 +227,7 @@ export default function Header() {
           onClick={handleSearch}
           className="p-2.5 bg-slate-50 text-center text-xs font-bold text-sky-600 hover:text-sky-700 hover:bg-sky-50 cursor-pointer border-t border-slate-100 transition-colors"
         >
-          Lihat Semua Hasil untuk &quot;{searchTerm || "Semua Produk"}&quot; &rarr;
+          {t("searchSeeAll")} &quot;{searchTerm || t("searchAll")}&quot; &rarr;
         </div>
       </div>
     </>
@@ -256,7 +263,7 @@ export default function Header() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
-                  placeholder="Cari kaset BD game, konsol, aksesoris (misal: Spider-Man, Zelda)..."
+                  placeholder={t("searchDesktop")}
                   className="w-full pl-5 pr-12 py-3 bg-slate-100 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-full border border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all outline-hidden"
                 />
                 <button 
@@ -280,7 +287,7 @@ export default function Header() {
               className="relative p-2.5 text-slate-700 hover:text-sky-500 hover:bg-slate-100 rounded-full transition-colors flex items-center gap-2 cursor-pointer"
             >
               <ShoppingCart className="w-6 h-6" />
-              <span className="hidden lg:inline text-xs font-semibold">Troli</span>
+              <span className="hidden lg:inline text-xs font-semibold">{t("cart")}</span>
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-sky-500 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
                   {totalItems}
@@ -288,60 +295,53 @@ export default function Header() {
               )}
             </button>
 
-            {/* User Profile / Admin Bar */}
-            <div className="hidden sm:flex items-center gap-3 pl-4 border-l border-slate-200">
-              {isAuthenticated ? (
-                <div className="flex items-center gap-2.5">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center border ${
-                    isAdmin 
-                      ? "bg-sky-50 text-sky-600 border-sky-300" 
-                      : "bg-slate-100 text-slate-700 border-slate-200"
-                  }`}>
-                    {isAdmin ? <ShieldCheck className="w-5 h-5" /> : <User className="w-5 h-5" />}
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                      {isAdmin ? "Administrator" : "Gamer Member"}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-slate-800 truncate max-w-[100px]">
-                        {user?.first_name || user?.username}
-                      </span>
-                      {isAdmin && (
-                        <Link 
-                          href="/admin-dashboard" 
-                          className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-500 text-white hover:bg-sky-400 transition-colors"
-                        >
-                          Dashboard
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    onClick={logout}
-                    title="Keluar / Logout"
-                    className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer ml-1"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
+            {/* Dark/Light Quick Toggle (matahari/bulan ringkas di pojok kanan navbar) */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title={theme === "dark" ? t("switchToLight") : t("switchToDark")}
+              aria-label={theme === "dark" ? t("switchToLight") : t("switchToDark")}
+              className="p-2.5 rounded-full text-slate-700 hover:text-sky-500 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              {theme === "dark" ? (
+                <Moon className="w-5 h-5 text-sky-400" />
               ) : (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/login"
-                    className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-sky-600 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Masuk</span>
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="text-xs font-bold bg-sky-500 hover:bg-sky-400 text-white px-3 py-2 rounded-xl transition-all shadow-xs shadow-sky-500/20"
-                  >
-                    Daftar
-                  </Link>
-                </div>
+                <Sun className="w-5 h-5 text-amber-500" />
               )}
+            </button>
+
+            {/* User Profile Trigger -> buka popup Settings (Bahasa & Tema) */}
+            <div className="relative hidden sm:block pl-2 border-l border-slate-200">
+              <button
+                type="button"
+                onClick={() => setProfileMenuOpen((o) => !o)}
+                aria-expanded={profileMenuOpen}
+                aria-label={t("settings")}
+                className="flex items-center gap-2.5 p-1.5 rounded-2xl hover:bg-slate-100 transition-colors cursor-pointer text-left group"
+              >
+                <div
+                  className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all ${
+                    isAdmin
+                      ? "bg-sky-50 text-sky-600 border-sky-300 group-hover:border-sky-400"
+                      : "bg-slate-100 text-slate-700 border-slate-200 group-hover:border-slate-300"
+                  }`}
+                >
+                  {isAdmin ? <ShieldCheck className="w-5 h-5" /> : <User className="w-5 h-5" />}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    {isAuthenticated ? (isAdmin ? t("admin") : t("gamer")) : t("gamer")}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-bold text-slate-800 truncate max-w-[100px]">
+                      {user?.first_name || user?.username || t("settings")}
+                    </span>
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${profileMenuOpen ? "rotate-180" : ""}`} />
+                  </div>
+                </div>
+              </button>
+
+              <SettingsMenu open={profileMenuOpen} onClose={() => setProfileMenuOpen(false)} align="right" />
             </div>
 
             <button 
@@ -362,7 +362,7 @@ export default function Header() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
-                placeholder="Cari game, kaset BD, konsol..."
+                placeholder={t("searchMobile")}
                 className="w-full pl-4 pr-10 py-2.5 bg-slate-100 text-sm text-slate-800 rounded-full border border-slate-200 focus:border-sky-500 outline-hidden"
               />
               <button type="submit" className="absolute right-3.5 top-3 text-slate-400">
@@ -385,7 +385,7 @@ export default function Header() {
             <div className="relative group">
               <button className="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 px-5 h-12 font-gaming font-semibold tracking-wider text-sm text-white transition-colors">
                 <Menu className="w-4 h-4" />
-                <span>SEMUA PRODUK</span>
+                <span>{t("allProducts")}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               
@@ -421,26 +421,26 @@ export default function Header() {
               <Link 
                 href="/" 
                 className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 rounded-md transition-colors"
-                title="Kembali ke Menu Utama"
+                title={t("homeTitle")}
               >
                 <Home className="w-4 h-4 text-sky-400" />
-                <span>Home</span>
+                <span>{t("navHome")}</span>
               </Link>
               <Link href="/games" className="px-3 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 rounded-md transition-colors">
-                Kaset Game BD
+                {t("navGames")}
               </Link>
               <Link href="/consoles" className="px-3 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 rounded-md transition-colors">
-                Konsol Game
+                {t("navConsoles")}
               </Link>
               <Link href="/accessories" className="px-3 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 rounded-md transition-colors">
-                Controller & Aksesoris
+                {t("navAccessories")}
               </Link>
               <Link href="/vouchers" className="px-3 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-800 rounded-md transition-colors">
-                Gift Cards & Voucher
+                {t("navVouchers")}
               </Link>
               <Link href="/promo" className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800 rounded-md transition-colors">
                 <Sparkles className="w-3.5 h-3.5" />
-                Promo & Flash Sale
+                {t("navPromo")}
               </Link>
             </nav>
 
@@ -450,7 +450,7 @@ export default function Header() {
               className="flex items-center gap-1.5 text-xs font-semibold text-sky-400 hover:text-sky-300 py-1.5 px-3 bg-slate-800/80 hover:bg-slate-800 rounded-full border border-sky-500/30 transition-all"
             >
               <Truck className="w-3.5 h-3.5" />
-              <span>Tracking & Cek Ongkir</span>
+              <span>{t("navTrack")}</span>
             </Link>
 
           </div>
@@ -473,7 +473,7 @@ export default function Header() {
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold uppercase block">
-                      {isAdmin ? "Admin" : "Gamer"}
+                      {isAdmin ? t("admin") : t("gamer")}
                     </span>
                     <span className="text-xs font-bold text-white">
                       {user?.first_name || user?.username}
@@ -491,6 +491,7 @@ export default function Header() {
                     </Link>
                   )}
                   <button
+                    type="button"
                     onClick={() => { logout(); setMobileMenuOpen(false); }}
                     className="p-1.5 text-rose-400 hover:text-rose-300"
                   >
@@ -505,14 +506,14 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex-1 py-2 text-center text-xs font-bold bg-slate-800 text-white rounded-xl border border-slate-700"
                 >
-                  Masuk
+                  {t("login")}
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex-1 py-2 text-center text-xs font-bold bg-sky-500 text-white rounded-xl"
                 >
-                  Daftar
+                  {t("register")}
                 </Link>
               </div>
             )}
@@ -524,13 +525,35 @@ export default function Header() {
             className="flex items-center gap-2 py-2 text-sm font-bold text-sky-400"
           >
             <Home className="w-4 h-4" />
-            <span>Home (Menu Utama)</span>
+            <span>{t("navHome")}</span>
           </Link>
-          <Link href="/games" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">Kaset Game BD</Link>
-          <Link href="/consoles" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">Konsol Game</Link>
-          <Link href="/accessories" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">Controller & Aksesoris</Link>
-          <Link href="/vouchers" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">Gift Cards & Voucher</Link>
-          <Link href="/promo" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-amber-400">Promo & Flash Sale</Link>
+          <Link href="/games" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">{t("navGames")}</Link>
+          <Link href="/consoles" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">{t("navConsoles")}</Link>
+          <Link href="/accessories" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">{t("navAccessories")}</Link>
+          <Link href="/vouchers" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">{t("navVouchers")}</Link>
+          <Link href="/promo" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-amber-400">{t("navPromo")}</Link>
+
+          {/* Mobile Settings Row (Theme & Language quick controls) */}
+          <div className="pt-3 mt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">{t("settings")}</span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold"
+              >
+                {theme === "dark" ? <Moon className="w-3.5 h-3.5 text-sky-400" /> : <Sun className="w-3.5 h-3.5 text-amber-400" />}
+                <span>{theme === "dark" ? t("themeDark") : t("themeLight")}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setProfileMenuOpen(true)}
+                className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold"
+              >
+                {t("language")}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </header>

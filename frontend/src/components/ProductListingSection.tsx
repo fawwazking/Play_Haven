@@ -1,5 +1,6 @@
 "use client";
 
+import { getApiBase } from "@/lib/api";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -91,7 +92,7 @@ const CATEGORIES: PlatformCategory[] = [
   },
 ];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE = getApiBase();
 
 import staticGamesData from "@/data/staticGames.json";
 import { useAuth } from "@/context/AuthContext";

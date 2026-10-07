@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import { apiUrl } from "@/lib/api";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
@@ -84,7 +85,7 @@ export default function CheckoutPage() {
         })),
       };
 
-      const res = await fetch("http://127.0.0.1:8000/api/v1/orders/create/", {
+      const res = await fetch(apiUrl("/api/v1/orders/create/"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

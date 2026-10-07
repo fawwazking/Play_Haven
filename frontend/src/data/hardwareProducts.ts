@@ -21,7 +21,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   // CONSOLES
   {
     id: "ps5-disc",
-    name: "Sony PlayStation 5 Disc Edition (Slim)",
+    name: "Sony PlayStation 5 Disc Edition",
     slug: "ps5-disc-edition",
     categoryType: "console",
     category: "PlayStation",
@@ -127,8 +127,8 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     price: 4399000,
     originalPrice: 4799000,
     stock: 20,
-    image: "/images/consoles/switch-docked-console.jpg",
-    specs: ["7-inch Vibrant OLED Screen", "Enhanced Audio System", "TV Dock with LAN Port", "Joy-Con Neon Red/Blue Included"],
+    image: "/images/consoles/switch-oled-console.png",
+    specs: ["7-inch Vibrant OLED Screen", "Enhanced Audio System", "TV Dock with LAN Port", "Joy-Con White Included"],
     description: "Layar OLED 7 inci menghadirkan warna pekat dan kontras tajam. Mainkan ribuan kaset cartridge Switch di mana saja atau sambungkan ke TV ruang keluarga."
   },
   {
@@ -161,7 +161,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "wii-u-deluxe",
-    name: "Nintendo Wii U Deluxe Set 32GB Black",
+    name: "Nintendo Wii U Basic Set 8GB White",
     slug: "wii-u-deluxe-32gb",
     categoryType: "console",
     category: "Nintendo",
@@ -170,7 +170,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
     originalPrice: 2899000,
     stock: 20,
     image: "/images/consoles/wii-u-console.png",
-    specs: ["Touchscreen GamePad Controller", "32GB Internal Flash", "Proprietary Optical Disc Drive", "HDMI 1080p Output"],
+    specs: ["Touchscreen GamePad Controller", "8GB Internal Flash", "Proprietary Optical Disc Drive", "HDMI 1080p Output"],
     description: "Sistem dual-screen inovatif Nintendo yang mendukung seluruh disc proprietary Wii U berkapasitas 25GB serta kompatibilitas penuh dengan disc game Nintendo Wii generasi sebelumnya."
   },
 
@@ -205,7 +205,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "switch-pro-controller",
-    name: "Nintendo Switch Pro Controller Black Edition",
+    name: "Nintendo Switch Pro Controller (Black)",
     slug: "nintendo-switch-pro-controller-black",
     categoryType: "accessory",
     category: "Controller",

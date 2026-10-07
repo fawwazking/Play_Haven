@@ -27,7 +27,7 @@ interface ConsoleProduct {
 const CONSOLES: ConsoleProduct[] = [
   {
     id: "ps5-disc",
-    name: "Sony PlayStation 5 Disc Edition (Slim)",
+    name: "Sony PlayStation 5 Disc Edition",
     slug: "ps5-disc-edition",
     platform: "PlayStation 5",
     category: "PlayStation",
@@ -125,8 +125,8 @@ const CONSOLES: ConsoleProduct[] = [
     price: 4399000,
     originalPrice: 4799000,
     stock: 20,
-    image: "/images/consoles/switch-docked-console.jpg",
-    specs: ["7-inch Vibrant OLED Screen", "Enhanced Audio System", "TV Dock with LAN Port", "Joy-Con Neon Red/Blue Included"],
+    image: "/images/consoles/switch-oled-console.png",
+    specs: ["7-inch Vibrant OLED Screen", "Enhanced Audio System", "TV Dock with LAN Port", "Joy-Con White Included"],
     description: "Layar OLED 7 inci menghadirkan warna pekat dan kontras tajam. Mainkan ribuan kaset cartridge Switch di mana saja atau sambungkan ke TV ruang keluarga."
   },
   {
@@ -157,7 +157,7 @@ const CONSOLES: ConsoleProduct[] = [
   },
   {
     id: "wii-u-deluxe",
-    name: "Nintendo Wii U Deluxe Set 32GB Black Edition",
+    name: "Nintendo Wii U Basic Set 8GB White",
     slug: "wii-u-deluxe-32gb",
     platform: "Nintendo Wii U",
     category: "Nintendo",
@@ -165,7 +165,7 @@ const CONSOLES: ConsoleProduct[] = [
     originalPrice: 2899000,
     stock: 20,
     image: "/images/consoles/wii-u-console.png",
-    specs: ["32GB Deluxe Storage", "Wii U Touch GamePad", "Full Wii Disc Backward Compatibility", "HDMI 1080p Support"],
+    specs: ["8GB Internal Storage", "Wii U Touch GamePad", "Full Wii Disc Backward Compatibility", "HDMI 1080p Support"],
     description: "Unit konsol dual-screen inovatif Nintendo. Sangat dicari untuk memainkan disc eksklusif Wii U serta kompatibel dengan seluruh kaset game Nintendo Wii."
   }
 ];

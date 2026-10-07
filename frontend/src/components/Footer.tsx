@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useT } from "@/context/SettingsContext";
 import { Gamepad2, Heart, Shield, Clock, MapPin } from "lucide-react";
 
 export default function Footer() {
+  const t = useT();
   return (
     <footer className="bg-slate-900 text-slate-400 text-xs mt-auto border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -19,14 +23,14 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              Toko spesialis Blu-ray Disc game konsol multi-platform (PlayStation, Xbox, Nintendo) original terlengkap dengan garansi region dan transparansi kondisi fisik.
+              {t("footerAbout")}
             </p>
           </div>
 
           {/* Navigasi Katalog */}
           <div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3">
-              Katalog Konsol
+              {t("footerCatalog")}
             </h4>
             <ul className="space-y-2">
               <li><Link href="/games?platform=ps5" className="hover:text-white transition-colors">PlayStation 5 Games</Link></li>
@@ -40,7 +44,7 @@ export default function Footer() {
           {/* Layanan & Keamanan */}
           <div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3">
-              Layanan Pelanggan
+              {t("footerCustomerService")}
             </h4>
             <ul className="space-y-2">
               <li><Link href="/cek-ongkir" className="hover:text-white transition-colors">Tarif Ongkir RajaOngkir</Link></li>
@@ -53,14 +57,14 @@ export default function Footer() {
           {/* Jam Operasional & Layanan */}
           <div className="space-y-3 bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              Jam Operasional & Bantuan
+              {t("footerHours")}
             </h4>
             <p className="text-[11px] text-slate-300 leading-relaxed">
               Layanan CS & Pengiriman Paket siap melayani setiap hari untuk memastikan pesanan Anda sampai tepat waktu.
             </p>
             <div className="pt-2 border-t border-slate-700 text-[11px] text-slate-400 space-y-1">
-              <div>Senin - Minggu: 09:00 - 21:00 WIB</div>
-              <div>Pengiriman Instan & Reguler Seluruh Indonesia</div>
+              <div>{t("footerDays")}</div>
+              <div>{t("footerShipping")}</div>
             </div>
           </div>
 
@@ -68,10 +72,10 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
           <div>
-            &copy; {new Date().getFullYear()} PlayHaven Game Store. Hak Cipta Dilindungi.
+            &copy; {new Date().getFullYear()} PlayHaven Game Store. {t("footerRights")}
           </div>
           <div className="text-slate-500">
-            Pusat Game Fisik, Konsol & Digital Voucher Indonesia
+            {t("footerTagline")}
           </div>
         </div>
 

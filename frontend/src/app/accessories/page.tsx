@@ -48,7 +48,7 @@ const CONTROLLERS: ControllerProduct[] = [
   },
   {
     id: "switch-pro-controller",
-    name: "Nintendo Switch Pro Controller Black Edition",
+    name: "Nintendo Switch Pro Controller (Black)",
     slug: "nintendo-switch-pro-controller-black",
     brand: "Nintendo",
     price: 899000,

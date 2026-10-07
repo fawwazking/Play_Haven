@@ -4,11 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useT } from "@/context/SettingsContext";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, updateQuantity, removeFromCart, subtotal, totalItems } = useCart();
   const router = useRouter();
+  const t = useT();
 
   if (!isDrawerOpen) return null;
 
@@ -36,10 +38,10 @@ export default function CartDrawer() {
               </div>
               <div>
                 <h3 className="font-gaming text-lg font-bold text-slate-900 tracking-wide">
-                  Keranjang Belanja
+                  {t("cartDrawerTitle")}
                 </h3>
                 <span className="text-xs text-slate-500 font-medium">
-                  {totalItems} item kaset / produk
+                  {totalItems} {t("cartItemsSuffix")}
                 </span>
               </div>
             </div>
@@ -59,15 +61,15 @@ export default function CartDrawer() {
                 <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
                   <ShoppingBag className="w-8 h-8" />
                 </div>
-                <p className="font-bold text-slate-700">Keranjang masih kosong</p>
+                <p className="font-bold text-slate-700">{t("cartEmpty")}</p>
                 <p className="text-xs text-slate-500 max-w-xs">
-                  Pilih kaset game favoritmu atau konsol impian dan masukkan ke keranjang belanja.
+                  {t("cartEmptyHint")}
                 </p>
                 <button
                   onClick={closeDrawer}
                   className="mt-2 px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer"
                 >
-                  Mulai Jelajah Kaset
+                  {t("cartStartShopping")}
                 </button>
               </div>
             ) : (
@@ -128,7 +130,7 @@ export default function CartDrawer() {
                       <button
                         onClick={() => removeFromCart(item.variantId)}
                         className="text-slate-400 hover:text-rose-600 p-1 transition-colors cursor-pointer"
-                        title="Hapus"
+                        title={t("remove")}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -143,7 +145,7 @@ export default function CartDrawer() {
           {items.length > 0 && (
             <div className="p-5 border-t border-slate-100 bg-slate-50 space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500">Subtotal Belanja</span>
+                <span className="text-slate-500">{t("cartSubtotal")}</span>
                 <span className="font-gaming text-xl font-bold text-slate-900">
                   Rp {subtotal.toLocaleString("id-ID")}
                 </span>
@@ -151,14 +153,14 @@ export default function CartDrawer() {
 
               <div className="flex items-center gap-2 text-[11px] text-slate-500">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Pengiriman dilindungi Bubble Wrap & Asuransi Kaset</span>
+                <span>{t("cartSafePackaging")}</span>
               </div>
 
               <button
                 onClick={handleCheckout}
                 className="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-500/30 hover:scale-[1.01] active:scale-95 cursor-pointer"
               >
-                <span>Lanjut ke Pembayaran</span>
+                <span>{t("cartCheckout")}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

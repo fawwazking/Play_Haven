@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -76,8 +77,8 @@ export default function AdminDashboardPage() {
     setLoading(true);
     try {
       const [resStats, resOrders] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/v1/admin-api/stats/"),
-        fetch("http://127.0.0.1:8000/api/v1/admin-api/orders/")
+        fetch(apiUrl("/api/v1/admin-api/stats/")),
+        fetch(apiUrl("/api/v1/admin-api/orders/"))
       ]);
 
       if (resStats.ok) {
@@ -102,7 +103,7 @@ export default function AdminDashboardPage() {
   const handleUpdateStatus = async (orderNumber: string, newStatus: string) => {
     setUpdatingOrder(orderNumber);
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/admin-api/orders/", {
+      const res = await fetch(apiUrl("/api/v1/admin-api/orders/"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ order_number: orderNumber, status: newStatus })
@@ -194,8 +195,8 @@ export default function AdminDashboardPage() {
               <span>Refresh Data</span>
             </button>
             <a
-              href="http://127.0.0.1:8000/admin"
-              target="_blank"
+              href={apiUrl("/admin")}
+              target="_blank" 
               rel="noreferrer"
               className="flex items-center gap-1.5 px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-sky-500/20 cursor-pointer"
             >
