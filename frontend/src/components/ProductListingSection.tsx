@@ -97,6 +97,7 @@ const API_BASE = getApiBase();
 import staticGamesData from "@/data/staticGames.json";
 import { useAuth } from "@/context/AuthContext";
 import AuthModal from "@/components/AuthModal";
+import { useSettings, useT } from "@/context/SettingsContext";
 
 export default function ProductListingSection() {
   const [games, setGames] = useState<Game[]>(staticGamesData as Game[]);
@@ -108,6 +109,9 @@ export default function ProductListingSection() {
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const { lang } = useSettings();
+  const t = useT();
+  const isEn = lang === "en";
 
   useEffect(() => {
     async function loadGames() {
@@ -222,22 +226,22 @@ export default function ProductListingSection() {
                   <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${cat.badgeBg}`}>
                     {cat.title}
                   </span>
-                  <h2 className="font-gaming text-2xl sm:text-3xl font-bold tracking-wide text-slate-900">
-                    Koleksi Top 10 Game BD
+                  <h2 className="font-gaming text-2xl sm:text-3xl font-bold tracking-wide text-slate-900 dark:text-slate-100">
+                    {t("topCollection")}
                   </h2>
                 </div>
 
                 <Link
                   href={`/games?platform=${cat.slug}`}
-                  className="flex items-center gap-1 text-xs font-bold text-sky-600 hover:text-sky-700 transition-colors"
+                  className="flex items-center gap-1 text-xs font-bold text-sky-600 dark:text-sky-400 hover:text-sky-700 transition-colors"
                 >
-                  <span>Lihat Semua {categoryGames.length} Game</span>
+                  <span>{t("viewAllGames")} {categoryGames.length} Game</span>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
-              {/* Grid 4 Kolom Card Game */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {/* Grid Card Game */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                 {categoryGames.map((game) => {
                   const firstVariant = game.variants[0];
                   const price = Number(game.min_price || firstVariant?.price || 0);
@@ -245,7 +249,7 @@ export default function ProductListingSection() {
                   return (
                     <div
                       key={game.id}
-                      className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-sky-300 transition-all duration-300 overflow-hidden hover:-translate-y-1.5"
+                      className="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:border-sky-300 dark:hover:border-sky-600 transition-all duration-300 overflow-hidden hover:-translate-y-1"
                     >
                       {/* Box Cover Art */}
                       <Link href={`/games/${game.slug}`} className="block relative aspect-3/4 w-full bg-slate-950 overflow-hidden flex items-center justify-center cursor-pointer">
@@ -257,73 +261,74 @@ export default function ProductListingSection() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none" />
 
-                        {/* Badges on Top */}
-                        <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 z-10">
-                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider shadow-xs ${cat.badgeBg}`}>
+                        {/* Badges on Top: kontras tinggi di mode terang maupun dark */}
+                        <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 flex flex-wrap gap-1 sm:gap-1.5 z-10">
+                          <span className={`px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold tracking-wider shadow-xs ${cat.badgeBg}`}>
                             {firstVariant?.platform_name || cat.title}
                           </span>
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/90 backdrop-blur-xs text-slate-800 shadow-xs">
+                          <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-semibold bg-slate-950/80 text-white border border-white/20 shadow-xs">
                             {firstVariant?.region_display || "Reg 3 (Asia)"}
                           </span>
                         </div>
 
                         {/* Badges Kondisi & Stok */}
-                        <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10 flex items-center justify-between gap-1">
+                        <div className="absolute bottom-2 left-2 right-2 sm:bottom-2.5 sm:left-2.5 sm:right-2.5 z-10 flex items-center justify-between gap-1">
                           <div className="flex gap-1">
-                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold shadow-xs bg-emerald-500 text-white">
-                              Baru
+                            <span className="px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold shadow-xs bg-emerald-500 text-white">
+                              {t("conditionNew")}
                             </span>
-                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold shadow-xs bg-amber-500 text-white">
-                              Bekas
+                            <span className="px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold shadow-xs bg-amber-500 text-white">
+                              {t("conditionUsed")}
                             </span>
                           </div>
                           
                           {/* Status Stok */}
-                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold shadow-xs ${
+                          <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold shadow-xs ${
                             (game.total_stock ?? 20) > 5 
-                              ? 'bg-emerald-600/90 text-white backdrop-blur-xs' 
+                              ? 'bg-emerald-600 text-white' 
                               : (game.total_stock ?? 20) > 0 
-                                ? 'bg-amber-600/90 text-white backdrop-blur-xs' 
+                                ? 'bg-amber-600 text-white' 
                                 : 'bg-rose-600 text-white'
                           }`}>
-                            {(game.total_stock ?? 20) > 0 ? `Stok: ${game.total_stock ?? 20}` : 'Habis'}
+                            {(game.total_stock ?? 20) > 0 ? `${t("inStock")}: ${game.total_stock ?? 20}` : t("outOfStock")}
                           </span>
                         </div>
                       </Link>
 
-                      {/* Card Body */}
-                      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                      {/* Card Body: Teks jelas & Kontras di Dark Mode */}
+                      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
                         <div>
-                          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-                            <span>{game.publisher}</span>
+                          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-300 font-medium mb-1">
+                            <span className="truncate max-w-[65%]">{game.publisher}</span>
                             <span>{game.release_year}</span>
                           </div>
 
                           <Link href={`/games/${game.slug}`}>
-                            <h3 className="font-bold text-sm text-slate-900 group-hover:text-sky-600 transition-colors line-clamp-2 leading-snug">
+                            <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors line-clamp-2 leading-snug">
                               {game.title}
                             </h3>
                           </Link>
                         </div>
 
-                        {/* Price & Action */}
-                        <div className="pt-2 border-t border-slate-100 flex items-end justify-between gap-2">
+                        {/* Price & Action: layout mobile 2 baris rapi, tombol tidak pernah terpotong */}
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
                           <div>
-                            <span className="block text-[10px] uppercase font-semibold text-slate-400">
-                              Mulai dari
+                            <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-500 dark:text-slate-300">
+                              {t("startingFrom")}
                             </span>
-                            <span className="font-gaming text-lg sm:text-xl font-bold text-slate-900 leading-none">
+                            <span className="font-gaming text-base sm:text-xl font-bold text-slate-900 dark:text-sky-400 leading-none">
                               Rp {price.toLocaleString("id-ID")}
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-1.5 shrink-0">
+                          {/* Tombol aksi: keranjang & beli berdampingan fleksibel */}
+                          <div className="grid grid-cols-[auto_1fr] items-center gap-1.5 w-full">
                             {/* Tombol Keranjang */}
                             <button
                               type="button"
                               onClick={() => handleAddToCart(game, firstVariant)}
-                              title="Tambah ke Keranjang"
-                              className="p-2 bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-600 rounded-xl transition-all border border-slate-200 cursor-pointer active:scale-95"
+                              title={t("addToCart")}
+                              className="p-2 sm:p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-sky-600 dark:hover:text-sky-400 rounded-xl transition-all border border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 shrink-0"
                             >
                               <ShoppingCart className="w-4 h-4" />
                             </button>
@@ -332,10 +337,10 @@ export default function ProductListingSection() {
                             <button
                               type="button"
                               onClick={() => handleDirectBuy(game, firstVariant)}
-                              className="px-3 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl flex items-center gap-1 transition-all shadow-xs hover:shadow-md text-xs font-bold cursor-pointer active:scale-95"
+                              className="w-full py-2 px-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl flex items-center justify-center gap-1 transition-all shadow-xs hover:shadow-md text-xs font-bold cursor-pointer active:scale-95 truncate"
                             >
-                              <Zap className="w-3.5 h-3.5" />
-                              <span>Beli</span>
+                              <Zap className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate">{t("buyNow")}</span>
                             </button>
                           </div>
                         </div>

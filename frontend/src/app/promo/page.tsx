@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { CheckCircle2, ShoppingCart, Flame, Tag, Percent, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
+import { useSettings, useT } from "@/context/SettingsContext";
 
 interface PromoProduct {
   id: string;
@@ -21,6 +22,7 @@ interface PromoProduct {
   image: string;
   badge: string;
   description: string;
+  description_en?: string;
 }
 
 const PROMO_PRODUCTS: PromoProduct[] = [
@@ -36,7 +38,8 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/games/marvels-spider-man-2-ps5.png",
     badge: "FLASH SALE 30%",
-    description: "Petualangan Peter Parker dan Miles Morales melawan Venom di kota New York generasi baru."
+    description: "Petualangan Peter Parker dan Miles Morales melawan Venom di kota New York generasi baru.",
+    description_en: "Peter Parker and Miles Morales battle Venom in Marvel's New York. DualSense haptic feedback and instant fast travel.",
   },
   {
     id: "promo-zelda-totk",
@@ -50,7 +53,8 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/games/the-legend-of-zelda-tears-of-the-kingdom-switch.jpg",
     badge: "BESTSELLER 25%",
-    description: "Jelajahi daratan dan langit Hyrule dengan kebebasan berkreasi tak terbatas."
+    description: "Jelajahi daratan dan langit Hyrule dengan kebebasan berkreasi tak terbatas.",
+    description_en: "Tears of the Kingdom physical cartridge. Explore floating sky islands and underground depths across Hyrule.",
   },
   {
     id: "promo-elden-ring",
@@ -64,7 +68,8 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/games/elden-ring-xbox-series-xbox-series-x.jpg",
     badge: "DEAL OF THE WEEK 35%",
-    description: "Game of the Year mahakarya Hidetaka Miyazaki dan George R.R. Martin."
+    description: "Game of the Year mahakarya Hidetaka Miyazaki dan George R.R. Martin.",
+    description_en: "GOTY edition physical disc for PS5. Traverse the Lands Between in an epic dark fantasy adventure.",
   },
   {
     id: "promo-gow-ragnarok",
@@ -78,7 +83,8 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/games/god-of-war-ragnarok-ps5.png",
     badge: "SPECIAL 28%",
-    description: "Perjalanan emosional Kratos dan Atreus menghadapi takdir perang sembilan alam mitologi Nordik."
+    description: "Perjalanan emosional Kratos dan Atreus menghadapi takdir perang sembilan alam mitologi Nordik.",
+    description_en: "Kratos and Atreus journey through all Nine Realms in Norse mythology. Native 4K 60 FPS presentation on PS5 physical disc.",
   },
   {
     id: "promo-ps5-bundle",
@@ -92,7 +98,8 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/consoles/ps5-console.png",
     badge: "CONSOLE BUNDLE",
-    description: "Paket lengkap mesin PS5 Disc Edition resmi beserta kaset fisik Spider-Man 2 siap main."
+    description: "Paket lengkap mesin PS5 Disc Edition resmi beserta kaset fisik Spider-Man 2 siap main.",
+    description_en: "Official PS5 Disc Edition console bundle including Spider-Man 2 physical game disc and DualSense controller.",
   },
   {
     id: "promo-dualsense",
@@ -106,13 +113,17 @@ const PROMO_PRODUCTS: PromoProduct[] = [
     stock: 20,
     image: "/images/consoles/dualsense-controller.png",
     badge: "GEAR SALE 20%",
-    description: "Controller nirkabel dengan haptic feedback dan dynamic triggers untuk imersi gaming nyata."
+    description: "Controller nirkabel dengan haptic feedback dan dynamic triggers untuk imersi gaming nyata.",
+    description_en: "Official DualSense wireless controller in Cosmic Red with dynamic adaptive triggers and integrated microphone.",
   }
 ];
 
 export default function PromoPage() {
   const { addToCart } = useCart();
   const router = useRouter();
+  const { lang } = useSettings();
+  const t = useT();
+  const isEn = lang === "en";
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   const handleAddToCart = (p: PromoProduct) => {
@@ -182,7 +193,7 @@ export default function PromoPage() {
           {PROMO_PRODUCTS.map(p => (
             <div
               key={p.id}
-              className="bg-white rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group"
+              className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group"
             >
               {/* Image Box */}
               <Link href={`/games/${p.slug}`} className="block relative aspect-3/4 w-full bg-slate-900/5 p-4 flex items-center justify-center overflow-hidden cursor-pointer">
@@ -202,38 +213,38 @@ export default function PromoPage() {
               </Link>
 
               {/* Content */}
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+              <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between space-y-3 sm:space-y-4">
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                     {p.category}
                   </span>
                   <Link href={`/games/${p.slug}`} className="block">
-                    <h3 className="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors">
+                    <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
                       {p.name}
                     </h3>
                   </Link>
-                  <p className="text-xs text-slate-500 line-clamp-2">
-                    {p.description}
+                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                    {isEn ? (p.description_en || p.description) : p.description}
                   </p>
                 </div>
 
                 {/* Price & Buy */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
                   <div>
-                    <span className="text-[11px] text-slate-400 line-through block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 line-through block">
                       Rp {p.originalPrice.toLocaleString("id-ID")}
                     </span>
-                    <span className="font-gaming text-xl sm:text-2xl font-bold text-rose-600">
+                    <span className="font-gaming text-lg sm:text-2xl font-bold text-rose-600">
                       Rp {p.promoPrice.toLocaleString("id-ID")}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="grid grid-cols-[auto_1fr] items-center gap-1.5 w-full">
                     <button
                       type="button"
                       onClick={() => handleAddToCart(p)}
-                      title="Tambah ke Keranjang"
-                      className="p-2.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl transition-all border border-slate-200 cursor-pointer active:scale-95"
+                      title={t("addToCart")}
+                      className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 rounded-xl transition-all border border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 shrink-0"
                     >
                       <ShoppingCart className="w-4 h-4" />
                     </button>
@@ -241,10 +252,10 @@ export default function PromoPage() {
                     <button
                       type="button"
                       onClick={() => handleDirectBuy(p)}
-                      className="px-3 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl flex items-center gap-1 transition-all shadow-xs hover:shadow-md text-xs font-bold cursor-pointer active:scale-95"
+                      className="w-full py-2.5 px-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl flex items-center justify-center gap-1 transition-all shadow-xs hover:shadow-md text-xs font-bold cursor-pointer active:scale-95 truncate"
                     >
-                      <Zap className="w-3.5 h-3.5" />
-                      <span>Beli</span>
+                      <Zap className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">{t("buyNow")}</span>
                     </button>
                   </div>
                 </div>

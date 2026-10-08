@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useSettings, useT } from "@/context/SettingsContext";
 import AuthModal from "@/components/AuthModal";
 import { getHardwareProductBySlug, ProductItem } from "@/data/hardwareProducts";
 import staticGamesData from "@/data/staticGames.json";
@@ -46,6 +47,7 @@ interface GameDetail {
   publisher: string;
   release_year: number;
   description?: string;
+  description_en?: string;
   cover_image_url: string;
   variants: Variant[];
   min_price: number;
@@ -57,6 +59,9 @@ export default function UniversalProductDetailPage() {
   const rawSlug = (Array.isArray(params?.slug) ? params.slug[0] : params?.slug) || "";
   const slug = decodeURIComponent(rawSlug).trim().toLowerCase();
   const { addToCart } = useCart();
+  const { lang } = useSettings();
+  const t = useT();
+  const isEn = lang === "en";
 
   // State untuk Game Kaset BD
   const [game, setGame] = useState<GameDetail | null>(null);
@@ -137,7 +142,8 @@ export default function UniversalProductDetailPage() {
             if (detail && detail.id) {
               setGame((prev) => ({
                 ...detail,
-                description: detail.description?.trim() || prev?.description || staticFound?.description || ""
+                description: detail.description?.trim() || prev?.description || staticFound?.description || "",
+                description_en: detail.description_en?.trim() || prev?.description_en || staticFound?.description_en || ""
               }));
               if (detail.variants && detail.variants.length > 0) {
                 setSelectedPlatformSlug(detail.variants[0].platform_slug);
@@ -153,7 +159,8 @@ export default function UniversalProductDetailPage() {
               if (found) {
                 setGame((prev) => ({
                   ...found,
-                  description: found.description?.trim() || prev?.description || staticFound?.description || ""
+                  description: found.description?.trim() || prev?.description || staticFound?.description || "",
+                  description_en: found.description_en?.trim() || prev?.description_en || staticFound?.description_en || ""
                 }));
                 if (found.variants && found.variants.length > 0) {
                   setSelectedPlatformSlug(found.variants[0].platform_slug);
@@ -373,7 +380,7 @@ export default function UniversalProductDetailPage() {
                 {/* Specs / Features */}
                 {(hardwareItem.specs || hardwareItem.features) && (
                   <div className="space-y-2">
-                    <span className="text-xs font-bold uppercase text-slate-500">Spesifikasi Unggulan:</span>
+                    <span className="text-xs font-bold uppercase text-slate-500">{t("specsTitle")}</span>
                     <div className="flex flex-wrap gap-2">
                       {(hardwareItem.specs || hardwareItem.features || []).map((sp, i) => (
                         <span key={i} className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold border border-slate-200">
@@ -386,11 +393,13 @@ export default function UniversalProductDetailPage() {
 
                 {/* Description */}
                 <div className="pt-2 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 space-y-2">
-                  <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Deskripsi Produk:</h3>
+                  <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">{t("descTitle")}</h3>
                   <p>
-                    {hardwareItem.description?.trim() 
-                      ? hardwareItem.description 
-                      : `Unit resmi ${hardwareItem.name} original bergaransi resmi PlayHaven Store. Kondisi 100% Brand New Sealed & siap kirim.`}
+                    {isEn 
+                      ? (hardwareItem.description_en || hardwareItem.description)
+                      : (hardwareItem.description?.trim() 
+                          ? hardwareItem.description 
+                          : `Unit resmi ${hardwareItem.name} original bergaransi resmi PlayHaven Store. Kondisi 100% Brand New Sealed & siap kirim.`)}
                   </p>
                 </div>
               </div>
@@ -403,7 +412,7 @@ export default function UniversalProductDetailPage() {
                   className="w-full sm:flex-1 py-3.5 px-6 rounded-xl border border-sky-500 text-sky-600 hover:bg-sky-50 font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  <span>+ Masukkan Keranjang</span>
+                  <span>{t("addToCart")}</span>
                 </button>
 
                 <button
@@ -412,7 +421,7 @@ export default function UniversalProductDetailPage() {
                   className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Zap className="w-4 h-4" />
-                  <span>Beli Sekarang &rarr;</span>
+                  <span>{t("buyNow")} &rarr;</span>
                 </button>
               </div>
 
@@ -532,7 +541,7 @@ export default function UniversalProductDetailPage() {
               {/* 1. FITUR PILIH KATEGORI / KONSOL (PS5, PS4, XBOX, SWITCH, DLL) */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-                  1. Pilih Platform Konsol:
+                  {t("selectConsole")}
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {availablePlatforms.map((plat) => {
@@ -559,7 +568,7 @@ export default function UniversalProductDetailPage() {
               {/* 2. FITUR PILIH KONDISI (BARU SEALED VS BEKAS PRE-OWNED) */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-                  2. Pilih Kondisi Kaset:
+                  {t("selectCondition")}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {platformVariants.map((v) => {
@@ -595,11 +604,13 @@ export default function UniversalProductDetailPage() {
 
               {/* Description */}
               <div className="pt-2 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 border-t border-slate-100">
-                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Sinopsis & Detail Game:</h3>
+                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider">{t("synopsisTitle")}</h3>
                 <p>
-                  {game.description?.trim() 
-                    ? game.description 
-                    : `Nikmati pengalaman gaming maksimal dengan kaset fisik original ${game.title}. Semua kaset bergaransi terbaca normal di drive optik konsol Anda dengan jaminan originalitas piringan disc resmi.`}
+                  {isEn
+                    ? (game.description_en || game.description)
+                    : (game.description?.trim() 
+                        ? game.description 
+                        : `Nikmati pengalaman gaming maksimal dengan kaset fisik original ${game.title}. Semua kaset bergaransi terbaca normal di drive optik konsol Anda dengan jaminan originalitas piringan disc resmi.`)}
                 </p>
               </div>
 
@@ -613,7 +624,7 @@ export default function UniversalProductDetailPage() {
                 className="w-full sm:flex-1 py-3.5 px-6 rounded-xl border border-sky-500 text-sky-600 hover:bg-sky-50 font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span>+ Masukkan Keranjang</span>
+                <span>{t("addToCart")}</span>
               </button>
 
               <button
@@ -622,7 +633,7 @@ export default function UniversalProductDetailPage() {
                 className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>Beli Sekarang &rarr;</span>
+                <span>{t("buyNow")} &rarr;</span>
               </button>
             </div>
 

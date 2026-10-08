@@ -11,6 +11,7 @@ export interface ProductItem {
   stock: number;
   image: string;
   description: string;
+  description_en?: string;
   specs?: string[];
   features?: string[];
   region?: string;
@@ -21,6 +22,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   // CONSOLES
   {
     id: "ps5-disc",
+    description_en: "Stunning visuals up to 4K 120Hz with near-instant load times. Fully compatible with every PS5 physical disc and thousands of PS4 disc titles. Includes an Ultra HD Blu-ray optical drive for the highest-resolution physical media.",
     name: "Sony PlayStation 5 Disc Edition",
     slug: "ps5-disc-edition",
     categoryType: "console",
@@ -35,6 +37,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "ps4-pro",
+    description_en: "A powerhouse machine that runs the entire best PS4 physical game library with steadier frame rates and 4K output options. Premium optical quality reads Blu-ray discs quietly and smoothly.",
     name: "Sony PlayStation 4 Pro 1TB Jet Black",
     slug: "ps4-pro-1tb",
     categoryType: "console",
@@ -49,6 +52,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "ps3-cecha",
+    description_en: "A collector's treasure. This rare unit carries a genuine physical Emotion Engine chip, able to read and natively play PS1, PS2 and PS3 physical discs straight from the optical drive.",
     name: "Sony PlayStation 3 Classic CECHA 60GB (Back-compat)",
     slug: "ps3-classic-60gb",
     categoryType: "console",
@@ -63,6 +67,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "ps-vita",
+    description_en: "A legendary handheld with a brilliant 5-inch OLED screen. Runs every PS Vita physical game card plus retro PSP and PS1 collections.",
     name: "Sony PlayStation Vita OLED Crystal Black (PCH-1000)",
     slug: "ps-vita-oled-1000",
     categoryType: "console",
@@ -77,6 +82,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-series-x",
+    description_en: "The most powerful console of this generation. Smart Delivery guarantees you always play the best version of your physical disc at no extra cost.",
     name: "Microsoft Xbox Series X 1TB Carbon Black",
     slug: "xbox-series-x-1tb",
     categoryType: "console",
@@ -91,6 +97,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-series-s",
+    description_en: "The most compact, power-efficient next-gen console. Enjoy instant load times, Quick Resume and hundreds of recent-generation games.",
     name: "Microsoft Xbox Series S 512GB Robot White Set",
     slug: "xbox-series-s-512gb",
     categoryType: "console",
@@ -105,6 +112,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-one-s",
+    description_en: "A sleek design with an internal power supply and a 4K Ultra HD Blu-ray drive for energy-efficient physical gaming and cinematic entertainment.",
     name: "Microsoft Xbox One S 1TB White Edition",
     slug: "xbox-one-s-1tb",
     categoryType: "console",
@@ -119,6 +127,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "switch-oled",
+    description_en: "A 7-inch OLED screen delivers deep blacks and razor-sharp contrast. Play thousands of Switch cartridge games anywhere, or dock it to your living-room TV.",
     name: "Nintendo Switch OLED Model with Dock & Joy-Con",
     slug: "nintendo-switch-oled-white",
     categoryType: "console",
@@ -133,6 +142,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "switch-lite",
+    description_en: "Purpose-built for lightweight, ultra-portable handheld play. Compatible with every Nintendo Switch game cartridge in handheld mode.",
     name: "Nintendo Switch Lite Compact Handheld Grey Edition",
     slug: "nintendo-switch-lite-grey",
     categoryType: "console",
@@ -147,6 +157,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "wii-classic",
+    description_en: "The revolutionary console that popularised motion gaming worldwide. Plays Nintendo Wii disc games and Nintendo GameCube disc games straight from the box.",
     name: "Nintendo Wii Sports Deluxe Console Set White",
     slug: "nintendo-wii-sports-deluxe",
     categoryType: "console",
@@ -161,6 +172,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "wii-u-deluxe",
+    description_en: "Nintendo's innovative dual-screen system supporting all 25GB proprietary Wii U discs, plus full backwards compatibility with Nintendo Wii disc games.",
     name: "Nintendo Wii U Basic Set 8GB White",
     slug: "wii-u-deluxe-32gb",
     categoryType: "console",
@@ -177,6 +189,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   // ACCESSORIES / CONTROLLERS
   {
     id: "dualsense-ps5",
+    description_en: "Feel every impact, bow draw and road surface through micro haptic feedback and pressure-sensitive adaptive triggers. A genuine physical link between your hands and the action on screen.",
     name: "PlayStation 5 DualSense Wireless Controller (Cobalt Blue)",
     slug: "dualsense-wireless-controller",
     categoryType: "accessory",
@@ -191,6 +204,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-wireless-controller",
+    description_en: "An ergonomic design built for hours of comfortable play. Compatible with Xbox Series X|S, Xbox One, Windows PC, Android and iOS, with a precision hybrid D-pad.",
     name: "Xbox Wireless Controller Robot White (Series X|S & PC)",
     slug: "xbox-wireless-controller-robot-white",
     categoryType: "accessory",
@@ -205,6 +219,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "switch-pro-controller",
+    description_en: "The go-to controller for action titles like Zelda and Super Smash Bros. Equipped with a gyro motion sensor, a battery lasting up to 40 hours, and a built-in Amiibo reader in the right stick.",
     name: "Nintendo Switch Pro Controller (Black)",
     slug: "nintendo-switch-pro-controller-black",
     categoryType: "accessory",
@@ -221,6 +236,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   // VOUCHERS
   {
     id: "psn-100k",
+    description_en: "An official instant redeem code to top up your Indonesian PlayStation Store balance. Buy digital games, DLC downloads or a PS Plus subscription safely without a credit card.",
     name: "PlayStation Network (PSN) Card Rp 100.000",
     slug: "psn-card-100k",
     categoryType: "voucher",
@@ -234,6 +250,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "psn-400k",
+    description_en: "Official Indonesian PSN Store credit with no credit card required, ready for the latest AAA digital releases, battle passes and seasonal passes on PS5 and PS4.",
     name: "PlayStation Network (PSN) Card Rp 400.000",
     slug: "psn-card-400k",
     categoryType: "voucher",
@@ -247,6 +264,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "ps-plus-deluxe-3m",
+    description_en: "Access hundreds of PS4 and PS5 catalogue titles, legendary PS1, PS2 and PSP classics, limited-time game trials, cloud saves and online multiplayer features.",
     name: "PlayStation Plus Deluxe Membership 3 Bulan",
     slug: "ps-plus-deluxe-3m",
     categoryType: "voucher",
@@ -260,6 +278,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-game-pass-ultimate-3m",
+    description_en: "Play hundreds of high-quality games across Xbox consoles, PC and cloud. Includes an EA Play subscription, member-exclusive discounts and day-one releases.",
     name: "Xbox Game Pass Ultimate 3 Bulan (Global/ID)",
     slug: "xbox-game-pass-ultimate-3m",
     categoryType: "voucher",
@@ -273,6 +292,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "xbox-game-pass-ultimate-1m",
+    description_en: "One month of Xbox Game Pass Ultimate, including access to hundreds of games on PC and Xbox console, EA Play and Xbox Cloud Gaming with no friction.",
     name: "Xbox Game Pass Ultimate 1 Bulan (PC / Console)",
     slug: "xbox-game-pass-ultimate-1m",
     categoryType: "voucher",
@@ -286,6 +306,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "nintendo-eshop-20usd",
+    description_en: "Top up the wallet of your US-region Nintendo eShop account to buy indie games, Super Smash Bros. DLC, Mario Kart Booster Course Pass and Nintendo Online classics.",
     name: "Nintendo eShop Card $20 USD (US Region)",
     slug: "nintendo-eshop-20usd",
     categoryType: "voucher",
@@ -299,6 +320,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "nintendo-eshop-50usd",
+    description_en: "Safe, instant eShop credit for buying blockbuster Switch games directly from your console.",
     name: "Nintendo eShop Card $50 USD (US Region)",
     slug: "nintendo-eshop-50-usd",
     categoryType: "voucher",
@@ -312,6 +334,7 @@ export const ALL_HARDWARE_PRODUCTS: ProductItem[] = [
   },
   {
     id: "steam-wallet-120k",
+    description_en: "An official Steam Wallet voucher in Rupiah, credited straight to your Steam account balance. Ideal for Steam Summer and Winter Sale events with no credit-card fees.",
     name: "Steam Wallet Code Rp 120.000 (IDR)",
     slug: "steam-wallet-120k",
     categoryType: "voucher",

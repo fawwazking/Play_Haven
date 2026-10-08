@@ -48,7 +48,7 @@ export default function Header() {
   const router = useRouter();
   const { totalItems, openDrawer } = useCart();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const { theme, toggleTheme } = useSettings();
+  const { theme, toggleTheme, lang, setLang } = useSettings();
   const t = useT();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
@@ -533,25 +533,37 @@ export default function Header() {
           <Link href="/vouchers" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-slate-200">{t("navVouchers")}</Link>
           <Link href="/promo" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-amber-400">{t("navPromo")}</Link>
 
-          {/* Mobile Settings Row (Theme & Language quick controls) */}
-          <div className="pt-3 mt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">{t("settings")}</span>
-            <div className="flex items-center gap-2">
+          {/* Mobile Settings Row: tema + pemilih bahasa langsung (ID | EN) */}
+          <div className="pt-3 mt-2 border-t border-slate-800 space-y-3 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">{t("appearance")}</span>
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold"
               >
                 {theme === "dark" ? <Moon className="w-3.5 h-3.5 text-sky-400" /> : <Sun className="w-3.5 h-3.5 text-amber-400" />}
                 <span>{theme === "dark" ? t("themeDark") : t("themeLight")}</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setProfileMenuOpen(true)}
-                className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-bold"
-              >
-                {t("language")}
-              </button>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">{t("language")}</span>
+              <div className="flex items-center gap-1 rounded-lg bg-slate-800 border border-slate-700 p-0.5">
+                {(["id", "en"] as const).map((l) => (
+                  <button
+                    key={l}
+                    type="button"
+                    onClick={() => setLang(l)}
+                    aria-pressed={lang === l}
+                    className={`px-3 py-1.5 rounded-md font-bold transition-colors cursor-pointer ${
+                      lang === l ? "bg-sky-500 text-white" : "text-slate-300"
+                    }`}
+                  >
+                    {l === "id" ? "ID" : "EN"}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
