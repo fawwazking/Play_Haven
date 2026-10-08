@@ -2,16 +2,21 @@
 
 import React, { useState } from "react";
 import { MessageCircle, X, Send, ShieldCheck, Gamepad2 } from "lucide-react";
+import { useSettings } from "@/context/SettingsContext";
 
 export default function WhatsAppFloating() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const { lang } = useSettings();
+  const isEn = lang === "en";
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    const defaultText = message.trim() || "Halo Admin PlayHaven! Saya ingin tanya ketersediaan stok kaset game fisik dan aksesoris.";
+    const defaultText = message.trim() || (isEn
+      ? "Hello PlayHaven Admin! I would like to inquire about physical game disc and accessories stock."
+      : "Halo Admin PlayHaven! Saya ingin tanya ketersediaan stok kaset game fisik dan aksesoris.");
     const encoded = encodeURIComponent(defaultText);
-    window.open(`https://wa.me/6281234567890?text=${encoded}`, "_blank");
+    window.open(`https://wa.me/6282269597454?text=${encoded}`, "_blank");
     setIsOpen(false);
     setMessage("");
   };
@@ -46,14 +51,16 @@ export default function WhatsAppFloating() {
           {/* Body Chat Bubble */}
           <div className="p-4 bg-slate-50 space-y-3 text-xs text-slate-700">
             <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs border border-slate-100 max-w-[85%] space-y-1">
-              <p className="font-semibold text-emerald-700 text-[11px]">PlayHaven Help Desk</p>
-              <p>Halo Gamers! Ada yang bisa kami bantu seputar kaset kaset PS5, PS4, Switch, atau cek resi kurir?</p>
-              <span className="text-[9px] text-slate-400 block text-right">Baru saja</span>
+              <p className="font-semibold text-emerald-700 text-[11px]">{isEn ? "PlayHaven Help Desk" : "PlayHaven Help Desk"}</p>
+              <p>{isEn
+                ? "Hello Gamers! Need help with PS5, PS4, Switch discs, or tracking your order?"
+                : "Halo Gamers! Ada yang bisa kami bantu seputar kaset kaset PS5, PS4, Switch, atau cek resi kurir?"}</p>
+              <span className="text-[9px] text-slate-400 block text-right">{isEn ? "Just now" : "Baru saja"}</span>
             </div>
 
             <div className="flex items-center gap-1.5 text-[10px] text-slate-500 pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Respon rata-rata di bawah 5 menit</span>
+              <span>{isEn ? "Average response under 5 minutes" : "Respon rata-rata di bawah 5 menit"}</span>
             </div>
           </div>
 
@@ -63,7 +70,7 @@ export default function WhatsAppFloating() {
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tulis pesan ke WhatsApp..."
+              placeholder={isEn ? "Type a message to WhatsApp..." : "Tulis pesan ke WhatsApp..."}
               className="flex-1 text-xs bg-slate-100 border border-slate-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
             <button
@@ -87,7 +94,7 @@ export default function WhatsAppFloating() {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
         </span>
         <MessageCircle className="w-5 h-5 text-white" />
-        <span className="text-xs font-bold tracking-wide pr-1">Tanya CS</span>
+        <span className="text-xs font-bold tracking-wide pr-1">{isEn ? "Ask Support" : "Tanya CS"}</span>
       </button>
     </div>
   );

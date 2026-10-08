@@ -92,7 +92,7 @@ function GamesContent() {
 
   const handleAddToCart = (game: Game, variant?: Variant) => {
     if (!isAuthenticated) {
-      setAuthActionText(`menambahkan ${game.title} ke keranjang`);
+      setAuthActionText(lang === "en" ? `add ${game.title} to cart` : `menambahkan ${game.title} ke keranjang`);
       setIsAuthModalOpen(true);
       return;
     }
@@ -113,13 +113,13 @@ function GamesContent() {
       maxStock: v.stock,
     });
 
-    setToastMsg(`✓ ${game.title} ditambahkan ke keranjang!`);
+    setToastMsg(`✓ ${game.title} ${t("cartAdded")}`);
     setTimeout(() => setToastMsg(""), 3000);
   };
 
   const handleDirectBuy = (game: Game, variant?: Variant) => {
     if (!isAuthenticated) {
-      setAuthActionText(`membeli ${game.title}`);
+      setAuthActionText(lang === "en" ? `purchase ${game.title}` : `membeli ${game.title}`);
       setIsAuthModalOpen(true);
       return;
     }
@@ -173,13 +173,13 @@ function GamesContent() {
       )}
 
       {/* Title & Stats */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
-          <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide text-slate-900">
-            Katalog Lengkap Kaset Game Fisik
+          <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide text-slate-900 dark:text-slate-100">
+            {t("catalogTitle")}
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Menampilkan {filteredGames.length} judul game kaset BD original bergaransi.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            {t("displaying")} {filteredGames.length} {t("catalogCount")}
           </p>
         </div>
 
@@ -187,10 +187,10 @@ function GamesContent() {
         <div className="relative w-full md:w-72">
           <input
             type="text"
-            placeholder="Cari judul game..."
+            placeholder={t("catalogSearch")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-4 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-xs focus:border-sky-500 outline-hidden shadow-2xs"
+            className="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl text-xs focus:border-sky-500 outline-hidden shadow-2xs"
           />
           <Search className="w-4 h-4 text-slate-400 absolute right-3.5 top-3" />
         </div>
@@ -199,11 +199,11 @@ function GamesContent() {
       {/* Platform Tabs */}
       <div className="flex flex-wrap items-center gap-2">
         {[
-          { label: "Semua Platform", val: "ALL" },
+          { label: t("tabAllPlatforms"), val: "ALL" },
           { label: "PlayStation 5", val: "ps5" },
           { label: "PlayStation 4", val: "ps4" },
-          { label: "PlayStation 3 (Classic)", val: "ps3" },
-          { label: "Xbox Series X / One", val: "xbox" },
+          { label: t("tabPs3"), val: "ps3" },
+          { label: t("tabXbox"), val: "xbox" },
           { label: "Nintendo Switch", val: "switch" },
         ].map((tab) => (
           <button
@@ -211,8 +211,8 @@ function GamesContent() {
             onClick={() => setSelectedPlatform(tab.val)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               selectedPlatform === tab.val
-                ? "bg-slate-900 text-white shadow-xs"
-                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                ? "bg-slate-900 text-white dark:bg-sky-500 dark:text-white shadow-xs"
+                : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
             }`}
           >
             {tab.label}
@@ -224,17 +224,17 @@ function GamesContent() {
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 py-10">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="h-80 bg-slate-200 rounded-2xl animate-pulse" />
+            <div key={i} className="h-80 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
           ))}
         </div>
       ) : filteredGames.length === 0 ? (
         <div className="py-20 text-center space-y-2">
-          <p className="text-slate-500 text-sm">Tidak ada game yang sesuai filter Anda.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">{t("noMatch")}</p>
           <button
             onClick={() => { setSelectedPlatform("ALL"); setSearchQuery(""); }}
-            className="text-xs font-bold text-sky-600 hover:underline"
+            className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline cursor-pointer"
           >
-            Reset Semua Filter
+            {t("resetFilters")}
           </button>
         </div>
       ) : (
