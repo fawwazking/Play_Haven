@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { CheckCircle2, ShoppingCart, Zap, Sparkles } from "lucide-react";
+import { CheckCircle2, ShoppingCart, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import AuthModal from "@/components/AuthModal";
@@ -301,7 +301,7 @@ export default function ConsolesPage() {
           {filteredConsoles.map(c => (
             <div
               key={c.id}
-              className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 transition-colors overflow-hidden flex flex-col"
             >
               {/* Image Box */}
               <Link href={`/games/${c.slug}`} className="block relative aspect-4/3 w-full bg-slate-900/5 p-6 flex items-center justify-center overflow-hidden cursor-pointer">

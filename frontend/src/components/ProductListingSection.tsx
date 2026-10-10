@@ -4,7 +4,7 @@ import { getApiBase } from "@/lib/api";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Star, ShoppingCart, Sparkles, ChevronRight, CheckCircle2, Zap } from "lucide-react";
+import { Star, ShoppingCart, ChevronRight, CheckCircle2, Zap } from "lucide-react";
 
 interface Variant {
   id: string;
@@ -249,7 +249,7 @@ export default function ProductListingSection() {
                   return (
                     <div
                       key={game.id}
-                      className="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:border-sky-300 dark:hover:border-sky-600 transition-all duration-300 overflow-hidden hover:-translate-y-1"
+                      className="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 dark:hover:border-sky-500/50 transition-colors overflow-hidden"
                     >
                       {/* Box Cover Art */}
                       <Link href={`/games/${game.slug}`} className="block relative aspect-3/4 w-full bg-slate-950 overflow-hidden flex items-center justify-center cursor-pointer">

@@ -3,7 +3,8 @@
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Globe2, ShieldAlert, CheckCircle, Info, HelpCircle } from "lucide-react";
+import { Globe2, HelpCircle, AlertCircle, CheckCircle2, Info } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 
 export default function PanduanRegionPage() {
   return (
@@ -12,19 +13,13 @@ export default function PanduanRegionPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-8">
         
-        {/* Banner Title */}
-        <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-indigo-950 text-white p-8 rounded-3xl shadow-xl space-y-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-bold uppercase tracking-wider">
-            <Globe2 className="w-3.5 h-3.5" />
-            PlayStation, Xbox & Nintendo
-          </span>
-          <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide">
-            Panduan Region Kaset Fisik & DLC Voucher
-          </h1>
-          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-            Semua konsol modern (PS5, PS4, Nintendo Switch, Xbox Series X) bersifat **Region Free** untuk memutar game fisik. Namun, untuk klaim kode DLC, Akun PSN/Nintendo Anda harus sesuai dengan Region kaset fisik.
-          </p>
-        </div>
+        <PageBanner
+          icon={<Globe2 className="w-5 h-5" />}
+          titleId="Panduan Lengkap Region Kaset & Kompatibilitas DLC"
+          titleEn="Complete Disc Region & DLC Compatibility Guide"
+          descId="Pelajari perbedaan Region 1 (US), Region 2 (EU/JPN), dan Region 3 (Asia/Indo). Semua konsol modern adalah Region Free untuk gameplay; region akun PSN menentukan klaim DLC."
+          descEn="Understand Region 1 (US), Region 2 (EU/JPN), and Region 3 (Asia/Indo). All modern consoles are region-free for disc playback; PSN account region governs DLC redemptions."
+        />
 
         {/* Region Breakdown Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

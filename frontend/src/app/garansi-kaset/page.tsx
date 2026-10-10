@@ -3,7 +3,8 @@
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ShieldCheck, Disc, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
+import { ShieldCheck, CheckCircle2, AlertTriangle, RefreshCcw, Disc, BadgeCheck } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 
 export default function GaransiKasetPage() {
   return (
@@ -12,19 +13,13 @@ export default function GaransiKasetPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-8">
         
-        {/* Banner Title */}
-        <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 text-white p-8 rounded-3xl shadow-xl space-y-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            Quality Control Kaset PlayHaven
-          </span>
-          <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide">
-            Standar Kaset Brand New (Baru) vs Bekas (Pre-owned)
-          </h1>
-          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-            Di PlayHaven, kejujuran kondisi kaset adalah komitmen utama kami. Setiap kaset yang Anda beli memiliki standar pengecekan ketat dengan garansi tukar unit.
-          </p>
-        </div>
+        <PageBanner
+          icon={<ShieldCheck className="w-5 h-5" />}
+          titleId="Standar Garansi Kaset Brand New & Bekas"
+          titleEn="Disc Warranty Standards: Brand New & Pre-Owned"
+          descId="Kami menjamin keaslian 100% setiap kaset Blu-ray Disc dan Cartridge yang dijual. Garansi tukar baru atau refund jika kaset mengalami kendala saat dimainkan di konsol Anda."
+          descEn="We guarantee 100% authenticity for every Blu-ray Disc and cartridge sold. Replacement or refund guarantee if discs fail to play on your console."
+        />
 
         {/* Side-by-side comparison */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -94,9 +89,9 @@ export default function GaransiKasetPage() {
         </div>
 
         {/* Quality Seal Assurance */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center gap-6">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-6">
           <div className="w-16 h-16 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-            <Sparkles className="w-8 h-8" />
+            <BadgeCheck className="w-8 h-8" />
           </div>
           <div className="space-y-1 text-xs text-slate-600">
             <h4 className="font-bold text-slate-900 text-sm">Segel Garansi Khusus PlayHaven Pre-Owned</h4>

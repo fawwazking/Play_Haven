@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import AuthModal from "@/components/AuthModal";
-import { Sparkles, ShoppingCart, Filter, Search, Zap, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Filter, Search, Zap, CheckCircle2 } from "lucide-react";
 
 interface Variant {
   id: string;

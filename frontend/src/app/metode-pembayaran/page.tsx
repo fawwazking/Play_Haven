@@ -4,6 +4,7 @@ import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CreditCard, QrCode, Building2, ShieldCheck, Zap, Lock } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 
 export default function MetodePembayaranPage() {
   return (
@@ -12,19 +13,13 @@ export default function MetodePembayaranPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-8">
         
-        {/* Banner Title */}
-        <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 text-white p-8 rounded-3xl shadow-xl space-y-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider">
-            <Lock className="w-3.5 h-3.5" />
-            Midtrans Payment Gateway (Bank Indonesia Licensed)
-          </span>
-          <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide">
-            Panduan Pembayaran & Keamanan Transaksi
-          </h1>
-          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-            Transaksi di PlayHaven diproses secara realtime dan terenkripsi menggunakan teknologi Midtrans Snap. Konfirmasi pembayaran instan otomatis tanpa perlu kirim bukti transfer manual.
-          </p>
-        </div>
+        <PageBanner
+          icon={<CreditCard className="w-5 h-5" />}
+          titleId="Panduan Pembayaran & Keamanan Transaksi"
+          titleEn="Payment Guide & Transaction Security"
+          descId="Transaksi di PlayHaven diproses secara realtime dan terenkripsi menggunakan Midtrans Snap. Konfirmasi pembayaran instan otomatis tanpa perlu kirim bukti transfer manual."
+          descEn="Transactions on PlayHaven are processed in real-time and encrypted via Midtrans Snap. Instant confirmation without manual transfer receipts."
+        />
 
         {/* Supported Channels */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

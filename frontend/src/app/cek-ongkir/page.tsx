@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Truck, Calculator, MapPin, ShieldCheck, ArrowRight, Package } from "lucide-react";
+import PageBanner from "@/components/PageBanner";
 
 const SAMPLE_RATES = [
   { city: "Jakarta Barat / Pusat / Selatan", service: "JNE Regular (1-2 hari)", cost: 10000 },
@@ -29,21 +30,13 @@ export default function CekOngkirPage() {
       <Header />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-8">
-        {/* Banner Title */}
-        <div className="bg-gradient-to-r from-sky-950 via-slate-900 to-indigo-950 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
-          <div className="max-w-xl space-y-3 relative z-10">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 text-xs font-bold uppercase tracking-wider">
-              <Truck className="w-3.5 h-3.5" />
-              RajaOngkir Starter API
-            </span>
-            <h1 className="font-gaming text-3xl sm:text-4xl font-bold tracking-wide">
-              Tarif & Estimasi Ongkos Kirim
-            </h1>
-            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              PlayHaven terintegrasi dengan ekspedisi resmi (JNE, TIKI, POS Indonesia). Setiap kaset game fisik dihitung dengan bobot standar 150 gram + pengaman bubble wrap tebal.
-            </p>
-          </div>
-        </div>
+        <PageBanner
+          icon={<Truck className="w-5 h-5" />}
+          titleId="Tarif & Estimasi Ongkos Kirim"
+          titleEn="Shipping Rates & Estimates"
+          descId="PlayHaven terintegrasi dengan ekspedisi resmi (JNE, TIKI, POS Indonesia). Setiap kaset game fisik dihitung dengan bobot standar 150 gram + pengaman bubble wrap tebal."
+          descEn="PlayHaven integrates with official couriers (JNE, TIKI, POS Indonesia). Each physical game disc is calculated at a standard 150 grams plus protective bubble wrap."
+        />
 
         {/* Calculation Widget */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
