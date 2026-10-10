@@ -240,18 +240,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-20 gap-4">
           
           {/* Logo Brand */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-blue-600 to-sky-400 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
-              <Gamepad2 className="w-6 h-6" />
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="PlayHaven Home">
+            <div className="w-9 h-9 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900">
+              <Gamepad2 className="w-5 h-5" strokeWidth={2.5} />
             </div>
-            <div className="flex flex-col">
-              <span className="font-gaming text-3xl font-bold tracking-wider text-slate-900 leading-none">
-                PLAY<span className="text-sky-500">HAVEN</span>
-              </span>
-              <span className="text-[10px] uppercase font-semibold tracking-widest text-slate-400">
-                Official Game Store
-              </span>
-            </div>
+            <span className="font-gaming text-2xl font-bold text-slate-900 dark:text-white leading-none tracking-tight">
+              PlayHaven
+            </span>
           </Link>
 
           {/* Search Bar Desktop with Suggestions */}

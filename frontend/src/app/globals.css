@@ -15,6 +15,46 @@
 }
 
 /* ------------------------------------------------------------------
+   Kill colored glow. Tailwind's colored shadows (shadow-sky-500/30,
+   shadow-emerald-600/40) emit a neon halo around solid buttons and
+   cards. Every surface keeps a neutral slate shadow instead, so the
+   design reads flat and print-like rather than neon.
+------------------------------------------------------------------- */
+[class*="shadow-sky-"],
+[class*="shadow-blue-"],
+[class*="shadow-emerald-"],
+[class*="shadow-rose-"],
+[class*="shadow-amber-"],
+[class*="shadow-indigo-"],
+[class*="shadow-cyan-"],
+[class*="shadow-purple-"],
+[class*="shadow-teal-"],
+[class*="shadow-red-"] {
+  --tw-shadow-color: transparent;
+}
+
+@supports (box-shadow: 0 0 #0000) {
+  .shadow,
+  .shadow-xs,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl {
+    --tw-shadow-color: rgb(15 23 42 / 0.08);
+  }
+  .dark .shadow,
+  .dark .shadow-xs,
+  .dark .shadow-sm,
+  .dark .shadow-md,
+  .dark .shadow-lg,
+  .dark .shadow-xl,
+  .dark .shadow-2xl {
+    --tw-shadow-color: rgb(0 0 0 / 0.4);
+  }
+}
+
+/* ------------------------------------------------------------------
    Dark mode: one-shot surface remap.
    The markup uses hardcoded slate/white surfaces WITHOUT dark: variants
    across ~23 files. Rather than editing every file (:hover, opacity and

@@ -73,14 +73,14 @@ function OrderSuccessContent() {
             </h4>
             <div className="grid grid-cols-3 gap-2 text-center">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md shadow-emerald-500/30">
+                <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md">
                   ✓
                 </div>
                 <span className="text-xs font-bold text-slate-800">Pembayaran</span>
                 <span className="text-[10px] text-slate-400">Terverifikasi</span>
               </div>
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md shadow-sky-500/30 animate-pulse">
+                <div className="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md animate-pulse">
                   <PackageCheck className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-slate-800">Quality Check</span>
@@ -109,7 +109,7 @@ function OrderSuccessContent() {
           <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
             <Link
               href="/"
-              className="w-full sm:flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-sky-500/30 cursor-pointer text-center"
+              className="w-full sm:flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer text-center"
             >
               <ShoppingBag className="w-4 h-4" />
               <span>Kembali ke Beranda</span>

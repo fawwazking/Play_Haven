@@ -168,7 +168,7 @@ export default function AdminDashboardPage() {
             <div className="pt-3">
               <Link
                 href="/login"
-                className="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-white font-gaming text-sm font-bold tracking-wider rounded-xl transition-all shadow-md shadow-sky-500/25 flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-white font-gaming text-sm font-bold tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
               >
                 <LogIn className="w-4 h-4" />
                 <span>MASUK SEBAGAI ADMIN</span>
@@ -219,7 +219,7 @@ export default function AdminDashboardPage() {
               href={apiUrl("/admin")}
               target="_blank" 
               rel="noreferrer"
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-sky-500/20 cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
             >
               <span>Django Native Admin</span>
               <ExternalLink className="w-3.5 h-3.5" />

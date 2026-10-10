@@ -55,7 +55,7 @@ export default function AuthModal({
         <div className="space-y-3 pt-2">
           <Link
             href="/login"
-            className="flex items-center justify-center gap-2 w-full py-3.5 px-6 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm shadow-lg shadow-sky-500/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 w-full py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm transition-colors"
             onClick={onClose}
           >
             <LogIn className="w-4 h-4" />

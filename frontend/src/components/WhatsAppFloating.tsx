@@ -27,24 +27,25 @@ export default function WhatsAppFloating() {
       {isOpen && (
         <div className="mb-4 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 text-white flex items-center justify-between">
+          <div className="bg-slate-900 dark:bg-slate-950 p-4 text-white flex items-center justify-between border-b border-slate-800">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-white">
+              <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white">
                 <Gamepad2 className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm leading-tight">PlayHaven Support</h4>
-                <div className="flex items-center gap-1.5 text-[11px] text-emerald-100">
-                  <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
-                  <span>Online • CS Game & Kaset</span>
+                <h4 className="font-bold text-sm tracking-wide">PlayHaven Support</h4>
+                <div className="flex items-center gap-1.5 text-[11px] text-emerald-400">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>Online CS</span>
                 </div>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-1.5 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+              aria-label="Tutup chat"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
@@ -75,7 +76,7 @@ export default function WhatsAppFloating() {
             />
             <button
               type="submit"
-              className="p-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all shadow-md shadow-emerald-600/30 cursor-pointer active:scale-95"
+              className="p-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors cursor-pointer"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -87,7 +88,7 @@ export default function WhatsAppFloating() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Chat WhatsApp"
-        className="group relative flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl hover:shadow-emerald-600/40 transition-all hover:scale-105 active:scale-95 cursor-pointer border-2 border-white"
+        className="group relative flex items-center gap-2.5 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-md transition-colors cursor-pointer"
       >
         <span className="relative flex h-3 w-3">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>

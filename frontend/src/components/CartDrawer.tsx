@@ -158,7 +158,7 @@ export default function CartDrawer() {
 
               <button
                 onClick={handleCheckout}
-                className="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-500/30 hover:scale-[1.01] active:scale-95 cursor-pointer"
+                className="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <span>{t("cartCheckout")}</span>
                 <ArrowRight className="w-4 h-4" />

@@ -284,7 +284,7 @@ export default function ConsolesPage() {
                 onClick={() => setSelectedBrand(b.val)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   selectedBrand === b.val 
-                    ? "bg-sky-500 text-white shadow-md shadow-sky-500/30" 
+                    ? "bg-sky-500 text-white shadow-md" 
                     : "bg-slate-800 text-slate-300 hover:bg-slate-700"
                 }`}
               >

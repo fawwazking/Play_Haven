@@ -281,7 +281,7 @@ export default function UniversalProductDetailPage() {
         <div className="max-w-7xl mx-auto px-4 py-24 text-center flex-1 space-y-4">
           <h1 className="font-gaming text-3xl font-bold text-slate-800">Produk Tidak Ditemukan</h1>
           <p className="text-slate-500 text-sm">Produk ini mungkin telah diperbarui atau alamat URL tidak valid.</p>
-          <Link href="/" className="inline-block px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white rounded-xl font-bold text-xs transition-all shadow-md shadow-sky-500/20">
+          <Link href="/" className="inline-block px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white rounded-xl font-bold text-xs transition-all shadow-md">
             Kembali ke Beranda
           </Link>
         </div>
@@ -418,7 +418,7 @@ export default function UniversalProductDetailPage() {
                 <button
                   type="button"
                   onClick={handleDirectBuyHardware}
-                  className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Zap className="w-4 h-4" />
                   <span>{t("buyNow")} &rarr;</span>
@@ -630,7 +630,7 @@ export default function UniversalProductDetailPage() {
               <button
                 type="button"
                 onClick={handleDirectBuyGame}
-                className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
                 <span>{t("buyNow")} &rarr;</span>

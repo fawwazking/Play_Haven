@@ -80,7 +80,7 @@ export default function LoginPage() {
           
           {/* Brand & Title Header */}
           <div className="text-center space-y-2">
-            <div className="inline-flex p-3 bg-slate-900 text-sky-400 rounded-2xl shadow-lg shadow-sky-500/10 border border-slate-800">
+            <div className="inline-flex p-3 bg-slate-900 text-sky-400 rounded-2xl shadow-lg border border-slate-800">
               <Gamepad2 className="w-8 h-8" />
             </div>
             <h2 className="font-gaming text-3xl font-bold tracking-wider text-slate-900">
@@ -140,7 +140,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-4 bg-sky-500 hover:bg-sky-400 disabled:bg-slate-300 text-white font-gaming text-base font-bold tracking-wider rounded-xl transition-all shadow-md shadow-sky-500/25 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 px-4 bg-sky-500 hover:bg-sky-400 disabled:bg-slate-300 text-white font-gaming text-base font-bold tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <span>MEMPROSES...</span>

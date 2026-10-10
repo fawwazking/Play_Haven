@@ -15,11 +15,11 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-white">
-                <Gamepad2 className="w-5 h-5" />
+              <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-slate-900">
+                <Gamepad2 className="w-5 h-5" strokeWidth={2.5} />
               </div>
-              <span className="font-gaming text-2xl font-bold tracking-wider text-white">
-                PLAY<span className="text-sky-400">HAVEN</span>
+              <span className="font-gaming text-2xl font-bold text-white tracking-tight">
+                PlayHaven
               </span>
             </div>
             <p className="text-slate-400 leading-relaxed">

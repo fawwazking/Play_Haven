@@ -354,7 +354,7 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={loading || items.length === 0}
-                  className="w-full py-3 bg-sky-500 hover:bg-sky-600 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+                  className="w-full py-3 bg-sky-500 hover:bg-sky-600 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 >
                   <CreditCard className="w-4 h-4" />
                   <span>{loading ? "Memproses Order..." : "Bayar via Midtrans Snap"}</span>
