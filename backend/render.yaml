@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: playhaven-backend
+    env: python
+    plan: free
+    rootDirectory: backend
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+    healthCheckPath: /api/v1/
+    autoDeploy: true
