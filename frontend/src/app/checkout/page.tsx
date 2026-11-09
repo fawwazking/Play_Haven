@@ -75,7 +75,7 @@ export default function CheckoutPage() {
         recipient_name: recipientName,
         recipient_phone: recipientPhone,
         shipping_address: shippingAddress,
-        subdistrict_id: "575",
+        subdistrict_id: "", // TODO: Tarik dari pilihan kurir RajaOngkir
         courier_name: courierName,
         courier_service: courierService,
         shipping_cost: shippingCost,
@@ -112,9 +112,9 @@ export default function CheckoutPage() {
             setErrorMsg("Pembayaran gagal atau dibatalkan.");
           },
           onClose: function () {
-            // Pengguna menutup popup Midtrans
+            // User menutup popup Midtrans tanpa menyelesaikan pembayaran
+            // Jangan redirect ke order-success, cukup kosongkan cart
             clearCart();
-            window.location.href = `/order-success?order=${data.order_number}`;
           },
         });
       } else {
@@ -282,17 +282,28 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Nomor Handphone / WhatsApp
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={recipientPhone}
-                      onChange={(e) => setRecipientPhone(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-sky-500 outline-hidden"
-                    />
-                  </div>
+                                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                        Nomor Handphone / WhatsApp (Hanya Angka)
+                                      </label>
+                                      <input
+                                        type="tel"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        required
+                                        value={recipientPhone}
+                                        onChange={(e) => {
+                                          const value = e.target.value.replace(/\D/g, '');
+                                          setRecipientPhone(value);
+                                        }}
+                                        onInput={(e) => {
+                                          // Pastikan hanya angka yang masuk
+                                          if (!/^\d*$/.test(e.currentTarget.value)) {
+                                            e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '');
+                                          }
+                                        }}
+                                        className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-sky-500 outline-hidden font-mono tracking-wide"
+                                      />
+                                    </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
