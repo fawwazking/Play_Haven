@@ -6,123 +6,78 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
-import { CheckCircle2, ShoppingBag, ArrowLeft, PackageCheck, Truck, ShieldCheck, Printer } from "lucide-react";
+import OrderStruk, { readLastOrder } from "@/components/OrderStruk";
+import { ShoppingBag, ArrowLeft } from "lucide-react";
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get("order") || `PH-${Math.floor(100000 + Math.random() * 900000)}`;
+  const orderNumber = searchParams.get("order");
+  const isPending = searchParams.get("status") === "pending";
   const { clearCart } = useCart();
   const [mounted, setMounted] = useState(false);
+  const [snapshot] = useState(() => readLastOrder());
 
   useEffect(() => {
     setMounted(true);
-    // Bersihkan keranjang karena pesanan sudah berhasil dibayar
     clearCart();
   }, []);
 
   if (!mounted) return null;
 
-  return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full">
-      {/* Success Card */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
-        
-        {/* Banner Top */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-8 text-white text-center">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30">
-            <CheckCircle2 className="w-10 h-10 text-white" />
-          </div>
-          <span className="px-3.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-100">
-            Pembayaran Berhasil Diverifikasi
-          </span>
-          <h1 className="font-gaming text-3xl sm:text-4xl font-black mt-3">
-            Terima Kasih Atas Pesananmu!
-          </h1>
-          <p className="text-emerald-100 text-xs sm:text-sm mt-1 max-w-md mx-auto">
-            Kaset game fisik pesananmu sedang kami siapkan, dikemas aman dengan bubble wrap ganda, dan segera diserahkan ke kurir.
-          </p>
+  if (!orderNumber) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-4">
+        <h1 className="font-gaming text-2xl font-bold text-slate-800">Nomor Pesanan Tidak Ditemukan</h1>
+        <p className="text-sm text-slate-500">
+          Halaman ini butuh parameter <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded">?order=PH-XXXXXX</code>.
+          Buka dari halaman checkout setelah pembayaran, atau cek riwayat pesanan di akunmu.
+        </p>
+        <Link href="/games" className="inline-block px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl transition-all">
+          Belanja Kaset Game
+        </Link>
+      </div>
+    );
+  }
+
+  // If the browser session has a matching stashed snapshot, render the full professional struk.
+  // Otherwise fall back to a minimal confirmation card (legacy / direct-link access).
+  const order = snapshot && snapshot.orderNumber === orderNumber ? snapshot : null;
+
+  if (order) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full">
+        <OrderStruk order={order} isPending={isPending} />
+        <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 print:hidden">
+          <Link href="/" className="w-full sm:flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer text-center">
+            <ShoppingBag className="w-4 h-4" />
+            <span>Kembali ke Beranda</span>
+          </Link>
+          <Link href="/games" className="w-full sm:flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer text-center">
+            <ArrowLeft className="w-4 h-4" />
+            <span>Belanja Kaset Lain</span>
+          </Link>
         </div>
+      </div>
+    );
+  }
 
-        {/* Invoice Summary */}
-        <div className="p-6 sm:p-8 space-y-6">
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <span className="text-xs text-slate-400 font-medium">Nomor Faktur / Pesanan</span>
-              <p className="font-gaming text-xl font-black text-slate-800 tracking-wider">
-                #{orderNumber}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-200">
-                LUNAS (Midtrans Snap)
-              </span>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
-              >
-                <Printer className="w-3.5 h-3.5" />
-                <span>Cetak</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Stepper Status */}
-          <div className="py-4 border-y border-slate-100">
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">
-              Status Pengiriman
-            </h4>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md">
-                  ✓
-                </div>
-                <span className="text-xs font-bold text-slate-800">Pembayaran</span>
-                <span className="text-[10px] text-slate-400">Terverifikasi</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center text-xs font-bold mb-1.5 shadow-md animate-pulse">
-                  <PackageCheck className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold text-slate-800">Quality Check</span>
-                <span className="text-[10px] text-slate-400">Optik & Kemasan</span>
-              </div>
-              <div className="flex flex-col items-center opacity-40">
-                <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold mb-1.5">
-                  <Truck className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold text-slate-800">Diserahkan Kurir</span>
-                <span className="text-[10px] text-slate-400">Ekspedisi JNE/TIKI</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Trust Guarantees */}
-          <div className="bg-sky-50/50 p-4 rounded-2xl border border-sky-100 flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
-            <div className="text-xs text-slate-600 leading-relaxed">
-              <p className="font-bold text-slate-800 mb-0.5">Garansi Toko PlayHaven</p>
-              Setiap kaset game fisik melewati pengujian pembacaan optik kaset di konsol sebelum dikirim. Garansi penukaran 7 hari berlaku jika kaset mengalami kendala saat dimainkan.
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-            <Link
-              href="/"
-              className="w-full sm:flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer text-center"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Kembali ke Beranda</span>
-            </Link>
-            <Link
-              href="/games"
-              className="w-full sm:flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer text-center"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Belanja Kaset Lain</span>
-            </Link>
-          </div>
-
+  // Minimal fallback (no stashed snapshot — e.g. user opened the URL directly)
+  return (
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full">
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl text-center">
+        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+          <span className="font-gaming text-2xl font-black">{isPending ? "!" : "✓"}</span>
+        </div>
+        <h1 className="font-gaming text-2xl font-black text-slate-900">
+          {isPending ? "Pesananmu Sudah Dibuat" : "Pembayaran Berhasil"}
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Nomor pesanan <span className="font-mono font-bold text-slate-700">{orderNumber}</span>.
+          Rincian lengkap & resi tersedia di riwayat pesanan akunmu.
+        </p>
+        <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
+          <Link href="/" className="w-full sm:flex-1 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm rounded-xl text-center">Kembali ke Beranda</Link>
+          <Link href="/games" className="w-full sm:flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl text-center">Belanja Lagi</Link>
         </div>
       </div>
     </div>

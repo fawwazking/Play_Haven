@@ -125,3 +125,23 @@
   .dark .border-blue-200,
   .dark .border-purple-200 { border-color: rgba(147, 197, 253, 0.3); }
 }
+
+/* ------------------------------------------------------------------
+   Print styles for the professional order struk (/order-success).
+   Scopes to .print:print-struk so only the receipt prints; the rest of
+   the page (header, footer, nav, other cards) is hidden.
+------------------------------------------------------------------- */
+@media print {
+  @page {
+    size: 80mm auto; /* thermal struk width */
+    margin: 4mm;
+  }
+  body { background: #fff !important; }
+  header, footer, nav, .print\:hidden, [class*="WhatsAppFloating"] { display: none !important; }
+  /* Isolate the struk card */
+  .print:shadow-none, .print:shadow-none { box-shadow: none !important; }
+  main > div { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+  .rounded-3xl, .rounded-2xl, .rounded-xl { border-radius: 0 !important; }
+  /* Force exact colors on paper */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}

@@ -9,6 +9,9 @@ from rest_framework import status, views, permissions
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .models import Order, OrderItem
+from .cart_items import resolve_cart_variant
+from .permissions import IsAdminToken
+from core.tokens import token_user
 from catalog.models import GameVariant
 
 def get_midtrans_snap():
@@ -79,44 +82,58 @@ class CreateOrderView(views.APIView):
         recipient_name = request.data.get('recipient_name')
         recipient_phone = request.data.get('recipient_phone')
         shipping_address = request.data.get('shipping_address')
+        region_label = request.data.get('region_label', '')
         subdistrict_id = request.data.get('subdistrict_id', '1')
         courier_name = request.data.get('courier_name', 'JNE')
         courier_service = request.data.get('courier_service', 'REG')
-        shipping_cost = Decimal(str(request.data.get('shipping_cost', 0)))
+        try:
+            shipping_cost = Decimal(str(request.data.get('shipping_cost', 0)))
+        except Exception:
+            return Response({'error': 'Biaya kirim tidak valid'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not items_data or not recipient_name or not shipping_address:
             return Response({'error': 'Data pesanan dan pengiriman tidak lengkap'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Normalisasi keranjang dulu: satu bentuk data valid dipakai di dua fase di bawah.
+        cart = []
+        for raw in items_data:
+            if not isinstance(raw, dict):
+                return Response({'error': 'Format item pesanan tidak valid'}, status=status.HTTP_400_BAD_REQUEST)
+            vid = str(raw.get('variant_id') or '').strip()
+            try:
+                qty = int(raw.get('quantity', 1))
+            except (TypeError, ValueError):
+                qty = 0
+            if not vid or qty < 1:
+                return Response({'error': f'Item pesanan tidak valid: {raw}'}, status=status.HTTP_400_BAD_REQUEST)
+            cart.append((vid, qty))
+
         order_number = f"PH-{uuid.uuid4().hex[:8].upper()}"
+        buyer = token_user(request)  # boleh None: checkout tamu tetap jalan
 
         try:
             with transaction.atomic():
+                # Fase 1 - resolusi & validasi stok. Belum ada stok yang diubah,
+                # jadi aman mengembalikan Response lebih awal dari dalam atomic.
+                resolved = []
+                for vid, qty in cart:
+                    variant, error = resolve_cart_variant(vid)
+                    if error:
+                        return Response({'error': error}, status=status.HTTP_404_NOT_FOUND)
+                    if variant.stock < qty:
+                        return Response({
+                            'error': f'Stok habis untuk {variant.game.title} [{variant.get_condition_display()}]. Tersisa: {variant.stock}'
+                        }, status=status.HTTP_409_CONFLICT)
+                    resolved.append((variant, qty))
+
+                # Fase 2 - potong stok & susun order item.
                 total_weight = 100
                 subtotal_amount = Decimal('0.00')
                 order_items_to_create = []
 
-                variant_ids = [item['variant_id'] for item in items_data]
-                locked_variants = {
-                    str(v.id): v 
-                    for v in GameVariant.objects.select_for_update().filter(id__in=variant_ids)
-                }
-
-                for item in items_data:
-                    vid = str(item['variant_id'])
-                    qty = int(item['quantity'])
-
-                    if vid not in locked_variants:
-                        return Response({'error': f'Varian game tidak ditemukan: {vid}'}, status=status.HTTP_404_NOT_FOUND)
-
-                    variant = locked_variants[vid]
-
-                    if variant.stock < qty:
-                        return Response({
-                            'error': f'Stok kaset habis untuk {variant.game.title} [{variant.get_condition_display()}]. Tersisa: {variant.stock}'
-                        }, status=status.HTTP_409_CONFLICT)
-
+                for variant, qty in resolved:
                     variant.stock -= qty
-                    variant.save()
+                    variant.save(update_fields=['stock'])
 
                     item_subtotal = variant.price * qty
                     subtotal_amount += item_subtotal
@@ -133,11 +150,12 @@ class CreateOrderView(views.APIView):
 
                 order = Order.objects.create(
                     order_number=order_number,
-                    user=request.user if request.user.is_authenticated else None,
+                    user=buyer,
                     recipient_name=recipient_name,
-                    recipient_phone=recipient_phone,
+                    recipient_phone=recipient_phone or '',
                     shipping_address=shipping_address,
-                    subdistrict_id=subdistrict_id,
+                    region_label=region_label or '',
+                    subdistrict_id=subdistrict_id or '',
                     courier_name=courier_name,
                     courier_service=courier_service,
                     shipping_cost=shipping_cost,
@@ -171,9 +189,28 @@ class CreateOrderView(views.APIView):
                 order.snap_token = snap_transaction.get('token')
                 order.save()
 
+                # Snapshot items for the post-payment struk (client renders it locally)
+                item_snap = [
+                    {
+                        'game_title': oi['variant'].game.title,
+                        'platform': oi['variant'].platform.name,
+                        'condition': oi['variant'].get_condition_display(),
+                        'quantity': oi['quantity'],
+                        'unit_price': str(oi['price_at_purchase']),
+                        'subtotal': str(oi['subtotal']),
+                    }
+                    for oi in order_items_to_create
+                ]
                 return Response({
                     'order_number': order.order_number,
                     'total_amount': order.total_amount,
+                    'subtotal_amount': str(order.subtotal_amount),
+                    'shipping_cost': str(order.shipping_cost),
+                    'region_label': order.region_label,
+                    'recipient_name': order.recipient_name,
+                    'courier_name': order.courier_name,
+                    'courier_service': order.courier_service,
+                    'items': item_snap,
                     'snap_token': order.snap_token,
                     'redirect_url': snap_transaction.get('redirect_url')
                 }, status=status.HTTP_201_CREATED)
@@ -214,18 +251,20 @@ class MidtransWebhookView(views.APIView):
                         order.status = 'PAID'
                     order.save()
                 elif transaction_status in ['cancel', 'deny', 'expire']:
+                    if order.status == 'CANCELLED':
+                        return Response({'status': 'Already cancelled'})
                     order.status = 'CANCELLED'
                     order.save()
                     for item in order.items.all():
                         item.variant.stock += item.quantity
-                        item.variant.save()
+                        item.variant.save(update_fields=['stock'])
 
             return Response({'status': 'Webhook successfully processed'})
         except Order.DoesNotExist:
             return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class AdminDashboardStatsView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAdminToken]
 
     def get(self, request):
         total_orders = Order.objects.count()
@@ -257,7 +296,7 @@ class AdminDashboardStatsView(views.APIView):
         })
 
 class AdminOrdersView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAdminToken]
 
     def get(self, request):
         orders = Order.objects.select_related('user').prefetch_related('items__variant__game').order_by('-created_at')[:50]
@@ -299,7 +338,7 @@ class AdminOrdersView(views.APIView):
             return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class AdminStockUpdateView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAdminToken]
 
     def post(self, request):
         variant_id = request.data.get('variant_id')
@@ -315,7 +354,7 @@ class AdminStockUpdateView(views.APIView):
             return Response({'error': 'Variant not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class AdminUsersView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAdminToken]
 
     def get(self, request):
         users = User.objects.all().order_by('-date_joined')[:100]

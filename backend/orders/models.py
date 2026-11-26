@@ -22,6 +22,7 @@ class Order(models.Model):
     recipient_name = models.CharField(max_length=150)
     recipient_phone = models.CharField(max_length=20)
     shipping_address = models.TextField()
+    region_label = models.CharField(max_length=200, blank=True, default='') # "Kota, Provinsi" display for the struk
     subdistrict_id = models.CharField(max_length=50) # RajaOngkir subdistrict / city ID
     courier_name = models.CharField(max_length=50) # JNE, POS, TIKI
     courier_service = models.CharField(max_length=50) # REG, YES, dll

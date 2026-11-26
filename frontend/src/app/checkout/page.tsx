@@ -1,26 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, authHeaders } from "@/lib/api";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useRegion } from "@/hooks/useRegion";
 import AuthModal from "@/components/AuthModal";
 import { useRouter } from "next/navigation";
-import { 
-  Trash2, 
-  Plus, 
-  Minus, 
-  Truck, 
-  CreditCard, 
-  ShieldCheck, 
-  ArrowRight, 
+import {
+  Trash2,
+  Plus,
+  Minus,
+  Truck,
+  CreditCard,
+  ShieldCheck,
+  ArrowRight,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  MapPin,
+  Loader2
 } from "lucide-react";
+
+interface ShippingOption {
+  service: string;
+  description: string;
+  cost: number;
+  etd: string;
+}
 
 declare global {
   interface Window {
@@ -32,14 +42,88 @@ export default function CheckoutPage() {
   const { items, removeFromCart, updateQuantity, clearCart, subtotal, totalWeight } = useCart();
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
+  const { provinces, citiesByProvince, useFallback, loading: regionLoading } = useRegion();
 
   // Form State
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhone, setRecipientPhone] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [provinceId, setProvinceId] = useState<number | "">("");
+  const [cityId, setCityId] = useState<number | "">("");
+
+  // Courier + shipping (fetched live from backend RajaOngkir when a city is selected)
   const [courierName, setCourierName] = useState("JNE");
-  const [courierService, setCourierService] = useState("REG");
-  const [shippingCost, setShippingCost] = useState(18000);
+  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
+  const [selectedService, setSelectedService] = useState("");
+  const [shippingCost, setShippingCost] = useState(0);
+  const [shippingEtd, setShippingEtd] = useState("");
+  const [shippingLoading, setShippingLoading] = useState(false);
+
+  // Derived: effective city / region label
+  const selectedCity = useMemo(() => {
+    if (cityId === "") return null;
+    const prov = provinces.find((p) => p.id === provinceId);
+    const city = prov?.cities.find((c) => c.cityId === cityId);
+    return city ? { ...city, provinceName: prov!.name } : null;
+  }, [cityId, provinceId, provinces]);
+
+  const regionLabel = selectedCity ? `${selectedCity.name}, ${selectedCity.provinceName}` : "";
+
+  // Fetch shipping options from backend RajaOngkir when city + courier change
+  useEffect(() => {
+    let cancelled = false;
+    if (cityId === "" || !courierName) {
+      setShippingOptions([]);
+      setSelectedService("");
+      setShippingCost(0);
+      setShippingEtd("");
+      return;
+    }
+    setShippingLoading(true);
+    (async () => {
+      try {
+        const weight = Math.max(100, (totalWeight + 100) || 100); // grams, include packing
+        const res = await fetch(apiUrl(`/api/v1/shipping/cost/`), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            destination: String(cityId),
+            weight,
+            courier: courierName.toLowerCase(),
+          }),
+        });
+        const data = await res.json();
+        if (cancelled) return;
+        const opts: ShippingOption[] = Array.isArray(data.services) ? data.services : [];
+        setShippingOptions(opts);
+        if (opts.length > 0) {
+          setSelectedService(opts[0].service);
+          setShippingCost(opts[0].cost);
+          setShippingEtd(opts[0].etd || "");
+        } else {
+          setSelectedService("");
+          setShippingCost(0);
+          setShippingEtd("");
+        }
+      } catch {
+        if (!cancelled) setShippingOptions([]);
+      } finally {
+        if (!cancelled) setShippingLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [cityId, courierName, totalWeight]);
+
+  const onCourierChange = (c: string) => {
+    setCourierName(c);
+  };
+  const onServiceChange = (svc: ShippingOption) => {
+    setSelectedService(svc.service);
+    setShippingCost(svc.cost);
+    setShippingEtd(svc.etd);
+  };
+
+  const totalAmount = subtotal + shippingCost;
 
   // Flow State
   const [loading, setLoading] = useState(false);
@@ -54,8 +138,6 @@ export default function CheckoutPage() {
     }
   }, [user]);
 
-  const totalAmount = subtotal + shippingCost;
-
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
@@ -64,6 +146,14 @@ export default function CheckoutPage() {
     }
     if (items.length === 0) {
       setErrorMsg("Keranjang belanja Anda masih kosong.");
+      return;
+    }
+    if (cityId === "") {
+      setErrorMsg("Pilih wilayah tujuan (Provinsi & Kota) terlebih dahulu.");
+      return;
+    }
+    if (shippingCost <= 0) {
+      setErrorMsg("Ongkir belum tersedia. Pilih kota/kabupaten tujuan yang valid.");
       return;
     }
 
@@ -75,9 +165,10 @@ export default function CheckoutPage() {
         recipient_name: recipientName,
         recipient_phone: recipientPhone,
         shipping_address: shippingAddress,
-        subdistrict_id: "", // TODO: Tarik dari pilihan kurir RajaOngkir
+        region_label: regionLabel,
+        subdistrict_id: String(cityId), // RajaOngkir city_id; backend maps to subdistrict at cost time
         courier_name: courierName,
-        courier_service: courierService,
+        courier_service: selectedService || "REG",
         shipping_cost: shippingCost,
         items: items.map((i) => ({
           variant_id: i.variantId,
@@ -87,7 +178,7 @@ export default function CheckoutPage() {
 
       const res = await fetch(apiUrl("/api/v1/orders/create/"), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(payload),
       });
 
@@ -97,29 +188,44 @@ export default function CheckoutPage() {
         throw new Error(data.error || "Gagal membuat pesanan.");
       }
 
+      // Stash the order snapshot so /order-success can render the full struk
+      try {
+        sessionStorage.setItem("playhaven_last_order", JSON.stringify({
+          orderNumber: data.order_number,
+          items: data.items,
+          subtotal: Number(data.subtotal_amount) || 0,
+          shippingCost: Number(data.shipping_cost) || 0,
+          total: Number(data.total_amount) || 0,
+          regionLabel: data.region_label || regionLabel,
+          recipientName: data.recipient_name || recipientName,
+          courier: `${data.courier_name} ${data.courier_service}`.trim(),
+          createdAt: new Date().toISOString(),
+        }));
+      } catch { /* storage is best-effort; the page still renders without it */ }
+
       // Jika Midtrans Snap Token berhasil didapat
       if (data.snap_token && window.snap) {
         window.snap.pay(data.snap_token, {
           onSuccess: function (result: any) {
             clearCart();
-            window.location.href = `/order-success?order=${data.order_number}`;
+            window.location.href = `/order-success?order=${data.order_number}&status=paid`;
           },
           onPending: function (result: any) {
             clearCart();
-            window.location.href = `/order-success?order=${data.order_number}`;
+            window.location.href = `/order-success?order=${data.order_number}&status=pending`;
           },
           onError: function (result: any) {
-            setErrorMsg("Pembayaran gagal atau dibatalkan.");
+            setErrorMsg("Pembayaran gagal. Pesanan tetap tersimpan dengan status menunggu pembayaran.");
           },
           onClose: function () {
-            // User menutup popup Midtrans tanpa menyelesaikan pembayaran
-            // Jangan redirect ke order-success, cukup kosongkan cart
-            clearCart();
+            // Popup ditutup tanpa menyelesaikan pembayaran: JANGAN kosongkan keranjang
+            // dan jangan redirect, biar user bisa coba bayar lagi.
+            setErrorMsg("Popup pembayaran ditutup. Pesanan sudah dibuat — buka ulang pembayaran atau cek email konfirmasi.");
           },
         });
       } else {
         clearCart();
-        window.location.href = `/order-success?order=${data.order_number}`;
+        window.location.href = `/order-success?order=${data.order_number}&status=pending`;
       }
     } catch (err: any) {
       setErrorMsg(err.message || "Terjadi kesalahan koneksi ke server backend.");
@@ -134,8 +240,8 @@ export default function CheckoutPage() {
 
       {/* Script SDK Midtrans Snap Sandbox */}
       <Script
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="Mid-client-o-NdE_sHnNHHZEq7"
+        src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL || "https://app.sandbox.midtrans.com/snap/snap.js"}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "Mid-client-o-NdE_sHnNHHZEq7"}
         strategy="lazyOnload"
       />
 
@@ -318,29 +424,124 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  {/* Pilihan Ekspedisi */}
+                  {/* Wilayah Tujuan (3 tingkat: Provinsi → Kota/Kab) */}
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          <MapPin className="w-3 h-3 inline mr-1 text-sky-600" />
+                          Provinsi
+                        </label>
+                        <select
+                          value={provinceId === "" ? "" : String(provinceId)}
+                          onChange={(e) => {
+                            const v = e.target.value === "" ? "" : Number(e.target.value);
+                            setProvinceId(v);
+                            setCityId("");
+                          }}
+                          className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-sky-500 outline-hidden"
+                        >
+                          <option value="">Pilih provinsi…</option>
+                          {provinces.map((p) => (
+                            <option key={p.id} value={p.id}>{p.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          Kota / Kabupaten
+                        </label>
+                        <select
+                          value={cityId === "" ? "" : String(cityId)}
+                          onChange={(e) => {
+                            setCityId(e.target.value === "" ? "" : Number(e.target.value));
+                          }}
+                          disabled={provinceId === ""}
+                          className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-sky-500 outline-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <option value="">Pilih kota…</option>
+                          {provinceId !== ""
+                            ? (citiesByProvince[provinceId] || []).map((c) => (
+                                <option key={c.cityId} value={c.cityId}>{c.name}</option>
+                              ))
+                            : []}
+                        </select>
+                      </div>
+                    </div>
+                    {useFallback && !regionLoading && (
+                      <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
+                        Mode offline: memakai data wilayah lokal (RajaOngkir ID). Harga tetap dihitung server-side.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Pilihan Kurir */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
                       Kurir Ekspedisi (RajaOngkir)
                     </label>
                     <select
-                      value={`${courierName}-${courierService}`}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === "JNE-REG") {
-                          setCourierName("JNE"); setCourierService("REG"); setShippingCost(18000);
-                        } else if (val === "JNE-YES") {
-                          setCourierName("JNE"); setCourierService("YES"); setShippingCost(32000);
-                        } else if (val === "TIKI-ONS") {
-                          setCourierName("TIKI"); setCourierService("ONS"); setShippingCost(30000);
-                        }
-                      }}
+                      value={courierName}
+                      onChange={(e) => onCourierChange(e.target.value)}
                       className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-sky-500 outline-hidden"
                     >
-                      <option value="JNE-REG">JNE Regular (2-3 Hari) — Rp 18.000</option>
-                      <option value="JNE-YES">JNE YES Yakin Esok Sampai (1 Hari) — Rp 32.000</option>
-                      <option value="TIKI-ONS">TIKI Over Night Service — Rp 30.000</option>
+                      <option value="JNE">JNE</option>
+                      <option value="TIKI">TIKI</option>
+                      <option value="POS">POS Indonesia</option>
                     </select>
+                  </div>
+
+                  {/* Layanan & Ongkir (live dari backend) */}
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Layanan & Estimasi Ongkir
+                    </label>
+                    {cityId === "" ? (
+                      <p className="text-xs text-slate-400 bg-slate-50 border border-dashed border-slate-200 rounded-xl px-3 py-2">
+                        Pilih provinsi & kota tujuan untuk menampilkan ongkir & estimasi (H) yang sebenarnya.
+                      </p>
+                    ) : shippingLoading ? (
+                      <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+                        <Loader2 className="w-4 h-4 animate-spin text-sky-500" />
+                        Menghitung ongkir & estimasi pengiriman…
+                      </div>
+                    ) : shippingOptions.length === 0 ? (
+                      <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2 flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        Ongkir tidak tersedia untuk wilayah ini. Coba pilih kota lain.
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {shippingOptions.map((o) => {
+                          const active = o.service === selectedService;
+                          return (
+                            <button
+                              key={o.service}
+                              type="button"
+                              onClick={() => onServiceChange(o)}
+                              className={`w-full text-left p-3 rounded-xl border transition-colors flex items-center justify-between gap-3 cursor-pointer ${
+                                active
+                                  ? "border-sky-400 bg-sky-50 ring-1 ring-sky-300"
+                                  : "border-slate-200 bg-white hover:bg-slate-50"
+                              }`}
+                            >
+                              <div className="min-w-0">
+                                <p className="text-xs font-bold text-slate-800">
+                                  {o.service}
+                                  <span className="ml-1.5 text-[10px] text-slate-400 font-normal">{o.description}</span>
+                                </p>
+                                {o.etd && (
+                                  <p className="text-[10px] text-slate-500">Estimasi {o.etd} hari kerja</p>
+                                )}
+                              </div>
+                              <span className={`font-gaming font-bold text-sm shrink-0 ${active ? "text-sky-600" : "text-slate-600"}`}>
+                                Rp {o.cost.toLocaleString("id-ID")}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -351,8 +552,13 @@ export default function CheckoutPage() {
                     <span>Rp {subtotal.toLocaleString("id-ID")}</span>
                   </div>
                   <div className="flex justify-between text-slate-500">
-                    <span>Ongkir Ekspedisi ({courierName})</span>
-                    <span>Rp {shippingCost.toLocaleString("id-ID")}</span>
+                    <span>
+                      Ongkir ({courierName}
+                      {selectedService ? ` ${selectedService}` : ""}
+                      {shippingEtd ? ` · ETD ${shippingEtd}h` : ""}
+                      )
+                    </span>
+                    <span>{shippingCost > 0 ? `Rp ${shippingCost.toLocaleString("id-ID")}` : "—"}</span>
                   </div>
                   <div className="flex justify-between text-slate-900 font-bold text-sm pt-2 border-t border-slate-100">
                     <span>Total Pembayaran</span>
@@ -364,7 +570,7 @@ export default function CheckoutPage() {
 
                 <button
                   type="submit"
-                  disabled={loading || items.length === 0}
+                  disabled={loading || items.length === 0 || cityId === "" || shippingCost <= 0}
                   className="w-full py-3 bg-sky-500 hover:bg-sky-600 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 >
                   <CreditCard className="w-4 h-4" />
