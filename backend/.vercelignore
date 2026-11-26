@@ -1,0 +1,12 @@
+# Keep the Vercel upload small: the local virtualenv alone is ~84 MB.
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+staticfiles/
+.env
+.env.*
+api/__pycache__/
+.vercel
